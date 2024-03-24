@@ -30,6 +30,7 @@
         <poi.version>4.1.2</poi.version>
         <velocity.version>2.3</velocity.version>
         <jwt.version>0.9.1</jwt.version>
+        <mybatis-plus.version>3.5.1</mybatis-plus.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -169,7 +170,19 @@
                 <artifactId>family-common</artifactId>
                 <version>${family.version}</version>
             </dependency>
+            <!-- 通用工具-->
+            <dependency>
+                <groupId>com.zlc</groupId>
+                <artifactId>family-manage</artifactId>
+                <version>${family.version}</version>
+            </dependency>
 
+            <!-- Mybatis-Plus -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -180,6 +193,7 @@
         <module>family-quartz</module>
         <module>family-generator</module>
         <module>family-common</module>
+        <module>family-manage</module>
     </modules>
     <packaging>pom</packaging>
 
