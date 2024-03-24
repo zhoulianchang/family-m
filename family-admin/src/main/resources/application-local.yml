@@ -1,0 +1,33 @@
+family:
+    # 文件路径 示例（ Windows配置D:/family/uploadPath，Linux配置 /home/family/uploadPath）
+    profile: /Users/zlc/study/family/test_file
+spring:
+    # redis 配置
+    redis:
+        # 地址
+        host: localhost
+        # 端口，默认为6379
+        port: 6379
+        # 数据库索引
+        database: 0
+        # 密码
+        password: 123456
+    #数据源配置
+    datasource:
+        druid:
+            # 主库数据源
+            master:
+                url: jdbc:mysql://localhost:23306/family?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                username: root
+                password: 123456
+            # 从库数据源
+            slave:
+                # 从数据源开关/默认关闭
+                enabled: false
+                url: 
+                username: 
+                password:
+            statViewServlet:
+                # 控制台管理用户名和密码
+                login-username: family
+                login-password: 123456

@@ -5,15 +5,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	
     <groupId>com.zlc</groupId>
-    <artifactId>tienchin</artifactId>
+    <artifactId>family</artifactId>
     <version>0.0.1</version>
 
-    <name>tienchin</name>
-    <url>http://www.tienchin.vip</url>
-    <description>TienChin健身管理系统</description>
+    <name>family-m</name>
+    <url>http://www.family.vip</url>
+    <description>F家管理系统</description>
     
     <properties>
-        <tienchin.version>0.0.1</tienchin.version>
+        <family.version>0.0.1</family.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
@@ -138,48 +138,48 @@
             <!-- 定时任务-->
             <dependency>
                 <groupId>com.zlc</groupId>
-                <artifactId>tienchin-quartz</artifactId>
-                <version>${tienchin.version}</version>
+                <artifactId>family-quartz</artifactId>
+                <version>${family.version}</version>
             </dependency>
 
             <!-- 代码生成-->
             <dependency>
                 <groupId>com.zlc</groupId>
-                <artifactId>tienchin-generator</artifactId>
-                <version>${tienchin.version}</version>
+                <artifactId>family-generator</artifactId>
+                <version>${family.version}</version>
             </dependency>
 
             <!-- 核心模块-->
             <dependency>
                 <groupId>com.zlc</groupId>
-                <artifactId>tienchin-framework</artifactId>
-                <version>${tienchin.version}</version>
+                <artifactId>family-framework</artifactId>
+                <version>${family.version}</version>
             </dependency>
 
             <!-- 系统模块-->
             <dependency>
                 <groupId>com.zlc</groupId>
-                <artifactId>tienchin-system</artifactId>
-                <version>${tienchin.version}</version>
+                <artifactId>family-system</artifactId>
+                <version>${family.version}</version>
             </dependency>
 
             <!-- 通用工具-->
             <dependency>
                 <groupId>com.zlc</groupId>
-                <artifactId>tienchin-common</artifactId>
-                <version>${tienchin.version}</version>
+                <artifactId>family-common</artifactId>
+                <version>${family.version}</version>
             </dependency>
 
         </dependencies>
     </dependencyManagement>
 
     <modules>
-        <module>tienchin-admin</module>
-        <module>tienchin-framework</module>
-        <module>tienchin-system</module>
-        <module>tienchin-quartz</module>
-        <module>tienchin-generator</module>
-        <module>tienchin-common</module>
+        <module>family-admin</module>
+        <module>family-framework</module>
+        <module>family-system</module>
+        <module>family-quartz</module>
+        <module>family-generator</module>
+        <module>family-common</module>
     </modules>
     <packaging>pom</packaging>
 

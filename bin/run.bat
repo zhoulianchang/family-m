@@ -4,11 +4,11 @@ echo [��Ϣ] ʹ��Jar��������Web���̡�
 echo.
 
 cd %~dp0
-cd ../tienchin-admin/target
+cd ../family-admin/target
 
 set JAVA_OPTS=-Xms256m -Xmx1024m -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=512m
 
-java -jar %JAVA_OPTS% tienchin-admin.jar
+java -jar %JAVA_OPTS% family-admin.jar
 
 cd bin
 pause
