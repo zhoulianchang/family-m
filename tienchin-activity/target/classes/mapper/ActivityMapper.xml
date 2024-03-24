@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlc.tienchin.activity.mapper.ActivityMapper">
+
+    <select id="selectActivityList" resultType="com.zlc.tienchin.activity.vo.ActivityVo">
+        SELECT
+            ta.*,
+            tc.channel_name
+        FROM
+            tienchin_activity ta,
+            tienchin_channel tc
+        WHERE
+            ta.del_flag = 0
+            AND ta.channel_id = tc.channel_id
+            <if test="type != null "> and ta.`type` = #{type}</if>
+            <if test="channelId != null "> and ta.`channel_id` = #{channelId}</if>
+            <if test="status != null ">
+                <if test="status == 1 ">
+                    AND ta.begin_time &gt; #{now}
+                </if>
+                <if test="status == 2 ">
+                    AND ta.begin_time &lt;= #{now} AND ta.end_time &gt;= #{now}
+                </if>
+                <if test="status == 3 ">
+                    AND ta.end_time &lt; #{now}
+                </if>
+            </if>
+            <if test="name != null and name !=''">
+                AND ta.name like concat('%', #{name}, '%')
+            </if>
+
+    </select>
+</mapper>
