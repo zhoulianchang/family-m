@@ -292,6 +292,16 @@ public class SysUser extends BaseEntity {
     }
 
     @Override
+    public Long getSelectId() {
+        return this.userId;
+    }
+
+    @Override
+    public String getSelectName() {
+        return this.nickName;
+    }
+
+    @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
                 .append("userId", getUserId())

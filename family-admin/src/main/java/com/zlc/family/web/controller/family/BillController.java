@@ -10,17 +10,20 @@ import com.zlc.family.common.enums.BusinessType;
 import com.zlc.family.common.enums.Operator;
 import com.zlc.family.common.exception.family.FamilyException;
 import com.zlc.family.common.utils.bean.BeanUtils;
+import com.zlc.family.common.utils.poi.ExcelUtil;
 import com.zlc.family.manage.domain.Bill;
 import com.zlc.family.manage.dto.BillDto;
 import com.zlc.family.manage.query.BillQuery;
 import com.zlc.family.manage.service.IBillService;
 import com.zlc.family.manage.vo.BillVo;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -93,5 +96,20 @@ public class BillController extends BaseController {
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids) {
         return toAjax(billService.update(new UpdateWrapper<Bill>().lambda().set(Bill::getDelFlag, FamilyConstants.DEL_YES).in(Bill::getBillId, ids)));
+    }
+
+    /**
+     * 导出渠道管理列表
+     */
+    @PreAuthorize("hasPermission('tienchin:channel:export')")
+    @Log(title = "账单管理", businessType = BusinessType.EXPORT)
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, BillQuery query) {
+        List<BillVo> voList = billService.selectBillList(query);
+        if (CollectionUtils.isEmpty(voList)) {
+            throw new FamilyException(FamilyException.Code.EXPORT_NO_DATA);
+        }
+        ExcelUtil<BillVo> util = new ExcelUtil<BillVo>(BillVo.class);
+        util.exportExcel(response, voList, "账单数据");
     }
 }

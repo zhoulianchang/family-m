@@ -1,37 +1,31 @@
 package com.zlc.family.web.controller.system;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletResponse;
-
 import com.zlc.family.common.annotation.Log;
-import com.zlc.family.common.core.page.TableDataInfo;
-import com.zlc.family.common.utils.StringUtils;
-import com.zlc.family.common.utils.poi.ExcelUtil;
-import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 import com.zlc.family.common.core.controller.BaseController;
 import com.zlc.family.common.core.domain.AjaxResult;
 import com.zlc.family.common.core.domain.entity.SysDept;
 import com.zlc.family.common.core.domain.entity.SysRole;
 import com.zlc.family.common.core.domain.entity.SysUser;
+import com.zlc.family.common.core.page.TableDataInfo;
+import com.zlc.family.common.core.vo.BaseSelectVo;
 import com.zlc.family.common.enums.BusinessType;
 import com.zlc.family.common.utils.SecurityUtils;
+import com.zlc.family.common.utils.StringUtils;
+import com.zlc.family.common.utils.poi.ExcelUtil;
 import com.zlc.family.system.service.ISysDeptService;
 import com.zlc.family.system.service.ISysPostService;
 import com.zlc.family.system.service.ISysRoleService;
 import com.zlc.family.system.service.ISysUserService;
+import org.apache.commons.lang3.ArrayUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 用户信息
@@ -222,5 +216,15 @@ public class SysUserController extends BaseController {
     @GetMapping("/deptTree")
     public AjaxResult deptTree(SysDept dept) {
         return success(deptService.selectDeptTreeList(dept));
+    }
+
+
+    /**
+     * 获取用户下拉框
+     */
+    @GetMapping("/select")
+    public AjaxResult select(SysUser user) {
+        List<SysUser> list = userService.selectUserList(user);
+        return success(BaseSelectVo.init(list));
     }
 }

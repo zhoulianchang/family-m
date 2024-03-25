@@ -1,6 +1,7 @@
 package com.zlc.family.common.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.zlc.family.common.enums.Operator;
 import com.zlc.family.common.utils.DateUtils;
 import com.zlc.family.common.utils.SecurityUtils;
@@ -50,7 +51,7 @@ public class BaseEntityD implements Serializable {
     }
 
     public BaseEntityD(Operator operator) {
-        switch (operator){
+        switch (operator) {
             case CREATE:
                 this.setCreateBy(SecurityUtils.getLoginUser().getUser().getNickName());
                 this.setCreateTime(DateUtils.getNowDate());
@@ -105,5 +106,15 @@ public class BaseEntityD implements Serializable {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    @JsonIgnore
+    public Long getSelectId() {
+        return null;
+    }
+
+    @JsonIgnore
+    public String getSelectName() {
+        return null;
     }
 }

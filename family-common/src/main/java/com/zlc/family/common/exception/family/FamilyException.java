@@ -19,6 +19,7 @@ public class FamilyException extends BaseException {
     }
 
     public enum Code {
+        EXPORT_NO_DATA("export.no.data"),
         BILL_ID_NULL("bill.id.null"),
         BILL_ID_EXISTS("bill.id.exists"),
         ;
