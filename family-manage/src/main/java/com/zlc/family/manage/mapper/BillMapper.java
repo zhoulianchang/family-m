@@ -3,6 +3,7 @@ package com.zlc.family.manage.mapper;
 import com.zlc.family.manage.domain.Bill;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.zlc.family.manage.query.BillQuery;
+import com.zlc.family.manage.vo.BillStatsVo;
 import com.zlc.family.manage.vo.BillVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -10,7 +11,7 @@ import java.util.List;
 
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author zlc
@@ -19,4 +20,6 @@ import java.util.List;
 public interface BillMapper extends BaseMapper<Bill> {
 
     List<BillVo> selectBillList(@Param("query") BillQuery query);
+
+    List<BillStatsVo> statsByFlow(@Param("query") BillQuery query);
 }

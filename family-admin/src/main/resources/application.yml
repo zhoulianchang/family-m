@@ -35,7 +35,6 @@ server:
 logging:
   config: classpath:logback/logback-${spring.profiles.active}.xml
   level:
-    com.zlc: info
     org.springframework: warn
 # 用户配置
 user:

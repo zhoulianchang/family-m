@@ -15,15 +15,16 @@ import com.zlc.family.manage.domain.Bill;
 import com.zlc.family.manage.dto.BillDto;
 import com.zlc.family.manage.query.BillQuery;
 import com.zlc.family.manage.service.IBillService;
+import com.zlc.family.manage.vo.BillStatsVo;
 import com.zlc.family.manage.vo.BillVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -49,6 +50,16 @@ public class BillController extends BaseController {
         startPage();
         List<BillVo> list = billService.selectBillList(query);
         return getDataTable(list);
+    }
+
+    /**
+     * 统计账单根据资金流向
+     */
+    @PreAuthorize("hasPermission('family:bill:list')")
+    @GetMapping("/stats/flow")
+    public AjaxResult stats(BillQuery query) {
+        List<BillStatsVo> list = billService.statsByFlow(query);
+        return success(list);
     }
 
     /**
@@ -101,7 +112,7 @@ public class BillController extends BaseController {
     /**
      * 导出渠道管理列表
      */
-    @PreAuthorize("hasPermission('tienchin:channel:export')")
+    @PreAuthorize("hasPermission('family:bill:export')")
     @Log(title = "账单管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, BillQuery query) {
@@ -111,5 +122,22 @@ public class BillController extends BaseController {
         }
         ExcelUtil<BillVo> util = new ExcelUtil<BillVo>(BillVo.class);
         util.exportExcel(response, voList, "账单数据");
+    }
+
+
+    @Log(title = "账单管理", businessType = BusinessType.IMPORT)
+    @PreAuthorize("hasPermission('family:bill:import')")
+    @PostMapping("/importData")
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
+        ExcelUtil<BillVo> util = new ExcelUtil<BillVo>(BillVo.class);
+        List<BillVo> userList = util.importExcel(file.getInputStream());
+        String operName = getUsername();
+        return toAjax(billService.importBill(userList, updateSupport, operName));
+    }
+
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response) {
+        ExcelUtil<BillVo> util = new ExcelUtil<BillVo>(BillVo.class);
+        util.importTemplateExcel(response, "账单数据");
     }
 }
