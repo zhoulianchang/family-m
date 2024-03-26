@@ -31,6 +31,9 @@
         <velocity.version>2.3</velocity.version>
         <jwt.version>0.9.1</jwt.version>
         <mybatis-plus.version>3.5.1</mybatis-plus.version>
+        <docker.registry.url>118.178.92.61</docker.registry.url>
+        <docker.registry.host>http://${docker.registry.url}:2375</docker.registry.host>
+        <docker.plugin.version>1.2.0</docker.plugin.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -211,7 +214,6 @@
             </plugin>
         </plugins>
     </build>
-
     <repositories>
         <repository>
             <id>public</id>
