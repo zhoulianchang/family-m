@@ -20,6 +20,9 @@ public class FamilyException extends BaseException {
 
     public enum Code {
         EXPORT_NO_DATA("export.no.data"),
+        FAVOR_ID_NULL("favor.id.null"),
+        FAVOR_ID_ERROR("favor.id.error"),
+        FAVOR_RELATION_ID_ERROR("favor.relation.id.error"),
         BILL_ID_NULL("bill.id.null"),
         BILL_ID_EXISTS("bill.id.exists"),
         ;

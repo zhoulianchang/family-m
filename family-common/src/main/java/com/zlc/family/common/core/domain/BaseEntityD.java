@@ -51,6 +51,10 @@ public class BaseEntityD implements Serializable {
     }
 
     public BaseEntityD(Operator operator) {
+        init(operator);
+    }
+
+    public void init(Operator operator) {
         switch (operator) {
             case CREATE:
                 this.setCreateBy(SecurityUtils.getLoginUser().getUser().getNickName());
@@ -66,7 +70,6 @@ public class BaseEntityD implements Serializable {
                 break;
         }
     }
-
 
     public String getCreateBy() {
         return createBy;
