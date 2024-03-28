@@ -11,14 +11,18 @@ import com.zlc.family.common.enums.BusinessType;
 import com.zlc.family.common.enums.Operator;
 import com.zlc.family.common.exception.family.FamilyException;
 import com.zlc.family.common.utils.StringUtils;
+import com.zlc.family.common.utils.poi.ExcelUtil;
 import com.zlc.family.manage.domain.Favor;
 import com.zlc.family.manage.query.FavorQuery;
 import com.zlc.family.manage.service.IFavorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +48,11 @@ public class FavorController extends BaseController {
     @GetMapping("/list")
     public TableDataInfo list(FavorQuery query) {
         startPage();
+        List<Favor> list = favorService.list(buildQW(query));
+        return getDataTable(list);
+    }
+
+    private QueryWrapper<Favor> buildQW(FavorQuery query) {
         QueryWrapper<Favor> qw = new QueryWrapper<>();
         qw.lambda().eq(Favor::getDelFlag, FamilyConstants.DEL_NO)
                 .eq(query.getBalanced() != null, Favor::getBalanced, query.getBalanced())
@@ -54,8 +63,7 @@ public class FavorController extends BaseController {
         Optional.ofNullable(query.getParams().get("endTime"))
                 .map(String::valueOf)
                 .ifPresent(endTime -> qw.lambda().le(Favor::getFavorTime, endTime));
-        List<Favor> list = favorService.list(qw);
-        return getDataTable(list);
+        return qw;
     }
 
     /**
@@ -100,5 +108,40 @@ public class FavorController extends BaseController {
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids) {
         return toAjax(favorService.update(new UpdateWrapper<Favor>().lambda().set(Favor::getDelFlag, FamilyConstants.DEL_YES).in(Favor::getFavorId, ids)));
+    }
+
+
+    /**
+     * 导出人情账薄
+     */
+    @PreAuthorize("hasPermission('family:favor:export')")
+    @Log(title = "人情账薄", businessType = BusinessType.EXPORT)
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, FavorQuery query) {
+        List<Favor> voList = favorService.list(buildQW(query));
+        if (CollectionUtils.isEmpty(voList)) {
+            throw new FamilyException(FamilyException.Code.EXPORT_NO_DATA);
+        }
+        ExcelUtil<Favor> util = new ExcelUtil<Favor>(Favor.class);
+        util.exportExcel(response, voList, "人情账薄数据");
+    }
+
+    /**
+     * 导入人情账薄
+     */
+    @PreAuthorize("hasPermission('family:favor:import')")
+    @Log(title = "人情账薄", businessType = BusinessType.IMPORT)
+    @PostMapping("/importData")
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
+        ExcelUtil<Favor> util = new ExcelUtil<Favor>(Favor.class);
+        List<Favor> favorList = util.importExcel(file.getInputStream());
+        String operName = getUsername();
+        return toAjax(favorService.importFavor(favorList, updateSupport, operName));
+    }
+
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response) {
+        ExcelUtil<Favor> util = new ExcelUtil<Favor>(Favor.class);
+        util.importTemplateExcel(response, "人情账薄数据");
     }
 }

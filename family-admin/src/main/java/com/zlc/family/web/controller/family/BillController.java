@@ -130,9 +130,9 @@ public class BillController extends BaseController {
     @PostMapping("/importData")
     public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
         ExcelUtil<BillVo> util = new ExcelUtil<BillVo>(BillVo.class);
-        List<BillVo> userList = util.importExcel(file.getInputStream());
+        List<BillVo> voList = util.importExcel(file.getInputStream());
         String operName = getUsername();
-        return toAjax(billService.importBill(userList, updateSupport, operName));
+        return toAjax(billService.importBill(voList, updateSupport, operName));
     }
 
     @PostMapping("/importTemplate")
