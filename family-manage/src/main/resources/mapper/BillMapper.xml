@@ -4,30 +4,30 @@
 
     <select id="selectBillList" resultType="com.zlc.family.manage.vo.BillVo">
         SELECT
-            t1.bill_id,
-            t1.amount,
-            t1.user_name,
-            t1.type,
-            t1.flow,
-            t1.pay_time,
-            t1.remark
+            bill_id,
+            amount,
+            user_name,
+            type,
+            flow,
+            pay_time,
+            remark
         FROM
-            family_bill t1
+            family_bill
         WHERE del_flag = 0
         <if test="query.userName != null and query.userName !=''">
-            AND t1.user_name = #{query.userName}
+            AND user_name = #{query.userName}
         </if>
         <if test="query.type != null">
-            AND t1.type = #{query.type}
+            AND type = #{query.type}
         </if>
         <if test="query.flow != null">
-            AND t1.type = #{query.flow}
+            AND type = #{query.flow}
         </if>
         <if test="query.params.beginTime != null and query.params.beginTime != ''"><!-- 开始时间检索 -->
-            and t1.pay_time &gt;= #{query.params.beginTime}
+            and pay_time &gt;= #{query.params.beginTime}
         </if>
         <if test="query.params.endTime != null and query.params.endTime != ''"><!-- 结束时间检索 -->
-            and t1.pay_time &lt;= #{query.params.endTime}
+            and pay_time &lt;= #{query.params.endTime}
         </if>
     </select>
     <select id="statsByFlow" resultType="com.zlc.family.manage.vo.BillStatsVo">
