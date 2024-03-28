@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 import javax.annotation.PostConstruct;
+import java.util.TimeZone;
 
 /**
  * 启动程序
@@ -25,6 +26,8 @@ public class FamilyApplication {
 
     @PostConstruct
     public void migrateDatabase() {
+        // 设置全局默认时区为东八区
+        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
         // 手动触发 Flyway 迁移操作
         flyway.migrate();
     }
