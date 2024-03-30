@@ -17,6 +17,10 @@ public class BillDto {
      * 账单编号
      */
     private Long billId;
+    /**
+     * 所属账户id
+     */
+    private Long accountId;
 
     /**
      * 账单金额

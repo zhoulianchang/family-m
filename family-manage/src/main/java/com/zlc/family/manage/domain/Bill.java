@@ -1,6 +1,7 @@
 package com.zlc.family.manage.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zlc.family.common.core.domain.BaseEntityFlag;
@@ -31,6 +32,10 @@ public class Bill extends BaseEntityFlag {
      */
     @TableId(value = "bill_id", type = IdType.AUTO)
     private Long billId;
+    /**
+     * 所属账户编号
+     */
+    private Long accountId;
 
     /**
      * 账单金额
@@ -56,6 +61,11 @@ public class Bill extends BaseEntityFlag {
      * 账单支付日期
      */
     private Date payTime;
+    /**
+     * 所属账户别名
+     */
+    @TableField(exist = false)
+    private String accountName;
 
     public Bill() {
     }

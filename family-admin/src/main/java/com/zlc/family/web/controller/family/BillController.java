@@ -11,9 +11,11 @@ import com.zlc.family.common.enums.Operator;
 import com.zlc.family.common.exception.family.FamilyException;
 import com.zlc.family.common.utils.bean.BeanUtils;
 import com.zlc.family.common.utils.poi.ExcelUtil;
+import com.zlc.family.manage.domain.Account;
 import com.zlc.family.manage.domain.Bill;
 import com.zlc.family.manage.dto.BillDto;
 import com.zlc.family.manage.query.BillQuery;
+import com.zlc.family.manage.service.IAccountService;
 import com.zlc.family.manage.service.IBillService;
 import com.zlc.family.manage.vo.BillStatsVo;
 import com.zlc.family.manage.vo.BillVo;
@@ -40,6 +42,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BillController extends BaseController {
     private final IBillService billService;
+    private final IAccountService accountService;
 
     /**
      * 获取账单列表
@@ -68,7 +71,12 @@ public class BillController extends BaseController {
     @PreAuthorize("hasPermission('family:bill:query')")
     @GetMapping("/{id}")
     public AjaxResult query(@PathVariable("id") Long id) {
-        return success(billService.getById(id));
+        Bill bill = billService.getById(id);
+        if (bill.getAccountId() != null) {
+            Account account = accountService.getById(bill.getAccountId());
+            bill.setAccountName(account.getName());
+        }
+        return success(bill);
     }
 
     /**
@@ -81,7 +89,7 @@ public class BillController extends BaseController {
         dto.setBillId(null);
         Bill entity = new Bill(Operator.CREATE);
         BeanUtils.copyBeanProp(entity, dto);
-        return toAjax(billService.save(entity));
+        return toAjax(billService.saveBill(entity));
     }
 
     /**
@@ -96,7 +104,7 @@ public class BillController extends BaseController {
         }
         Bill entity = new Bill(Operator.UPDATE);
         BeanUtils.copyBeanProp(entity, dto);
-        return toAjax(billService.updateById(entity));
+        return toAjax(billService.updateBill(entity));
     }
 
     /**
@@ -110,7 +118,7 @@ public class BillController extends BaseController {
     }
 
     /**
-     * 导出渠道管理列表
+     * 导出账单管理列表
      */
     @PreAuthorize("hasPermission('family:bill:export')")
     @Log(title = "账单管理", businessType = BusinessType.EXPORT)

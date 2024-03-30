@@ -1,7 +1,5 @@
 package com.zlc.family.framework.manager.factory;
 
-import java.util.TimerTask;
-
 import com.zlc.family.common.constant.Constants;
 import com.zlc.family.common.utils.LogUtils;
 import com.zlc.family.common.utils.ServletUtils;
@@ -13,9 +11,11 @@ import com.zlc.family.system.domain.SysLogininfor;
 import com.zlc.family.system.domain.SysOperLog;
 import com.zlc.family.system.service.ISysLogininforService;
 import com.zlc.family.system.service.ISysOperLogService;
+import eu.bitwalker.useragentutils.UserAgent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import eu.bitwalker.useragentutils.UserAgent;
+
+import java.util.TimerTask;
 
 /**
  * 异步工厂（产生任务用）

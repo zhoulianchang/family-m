@@ -37,22 +37,42 @@
         FROM
             family_bill t1
         WHERE del_flag = 0
-            <if test="query.userName != null and query.userName !=''">
-                AND t1.user_name = #{query.userName}
-            </if>
-            <if test="query.type != null">
-                AND t1.type = #{query.type}
-            </if>
-            <if test="query.flow != null">
-                AND t1.type = #{query.flow}
-            </if>
-            <if test="query.params.beginTime != null and query.params.beginTime != ''"><!-- 开始时间检索 -->
-                and t1.pay_time &gt;= #{query.params.beginTime}
-            </if>
-            <if test="query.params.endTime != null and query.params.endTime != ''"><!-- 结束时间检索 -->
-                and t1.pay_time &lt;= #{query.params.endTime}
+            <if test="query!=null">
+                <if test="query.userName != null and query.userName !=''">
+                    AND t1.user_name = #{query.userName}
+                </if>
+                <if test="query.type != null">
+                    AND t1.type = #{query.type}
+                </if>
+                <if test="query.flow != null">
+                    AND t1.type = #{query.flow}
+                </if>
+                <if test="query.params.beginTime != null and query.params.beginTime != ''"><!-- 开始时间检索 -->
+                    and t1.pay_time &gt;= #{query.params.beginTime}
+                </if>
+                <if test="query.params.endTime != null and query.params.endTime != ''"><!-- 结束时间检索 -->
+                    and t1.pay_time &lt;= #{query.params.endTime}
+                </if>
             </if>
         GROUP BY
             flow
+    </select>
+    <select id="statsByType" resultType="com.zlc.family.manage.domain.Bill">
+        SELECT
+            type,
+            SUM( amount ) AS amount
+        FROM
+            family_bill
+        WHERE del_flag = 0
+        <if test="query!=null">
+            <if test="query.params.beginTime != null and query.params.beginTime != ''"><!-- 开始时间检索 -->
+                and pay_time &gt;= #{query.params.beginTime}
+            </if>
+            <if test="query.params.endTime != null and query.params.endTime != ''"><!-- 结束时间检索 -->
+                and pay_time &lt;= #{query.params.endTime}
+            </if>
+        </if>
+        GROUP BY
+            type
     </select>
 </mapper>

@@ -21,6 +21,10 @@ public class BillVo implements Serializable {
     @Excel(name = "账单编号", cellType = Excel.ColumnType.NUMERIC, prompt = "账单编号")
     private Long billId;
 
+    @Excel(name = "账户编号", cellType = Excel.ColumnType.NUMERIC,type = Excel.Type.IMPORT, prompt = "对应的是账户管理中的账户编号")
+    @NotNull(message = "账户编号不能为空")
+    private Long accountId;
+
     /**
      * 用户名称
      */

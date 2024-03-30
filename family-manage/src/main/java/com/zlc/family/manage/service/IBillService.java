@@ -1,12 +1,15 @@
 package com.zlc.family.manage.service;
 
-import com.zlc.family.manage.domain.Bill;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zlc.family.common.core.vo.EchartPieVo;
+import com.zlc.family.manage.domain.Bill;
 import com.zlc.family.manage.query.BillQuery;
+import com.zlc.family.manage.query.BillStatsQuery;
 import com.zlc.family.manage.vo.BillStatsVo;
 import com.zlc.family.manage.vo.BillVo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -23,4 +26,11 @@ public interface IBillService extends IService<Bill> {
     boolean importBill(List<BillVo> userList, boolean updateSupport, String operName);
 
     List<BillStatsVo> statsByFlow(BillQuery query);
+
+    Map<String, List<EchartPieVo>> statsByType(BillStatsQuery query);
+
+    boolean saveBill(Bill entity);
+
+    boolean updateBill(Bill entity);
+
 }

@@ -19,6 +19,9 @@ public class FamilyException extends BaseException {
     }
 
     public enum Code {
+        ID_EXISTS("id.exists"),
+        ID_NULL("id.null"),
+        DATA_ERROR("data.error"),
         EXPORT_NO_DATA("export.no.data"),
         FAVOR_ID_NULL("favor.id.null"),
         FAVOR_ID_ERROR("favor.id.error"),

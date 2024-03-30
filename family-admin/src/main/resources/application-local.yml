@@ -33,4 +33,4 @@ spring:
         login-password: 123456
 logging:
   level:
-    com.zlc: warn
+    com.zlc: debug

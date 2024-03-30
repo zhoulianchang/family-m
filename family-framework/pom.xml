@@ -58,6 +58,11 @@
             <groupId>com.zlc</groupId>
             <artifactId>family-system</artifactId>
         </dependency>
+        <!-- 系统模块-->
+        <dependency>
+            <groupId>com.zlc</groupId>
+            <artifactId>family-manage</artifactId>
+        </dependency>
 
     </dependencies>
 

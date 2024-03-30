@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zlc.family.manage.mapper.AccountMapper">
+
+    <update id="resetBalance">
+        UPDATE family_account AS fa
+            SET fa.balance = fa.init_amount + (
+            SELECT SUM(CASE WHEN fb.flow = 1 THEN fb.amount ELSE -fb.amount END)
+            FROM family_bill AS fb
+            WHERE fb.account_id = fa.account_id
+        )
+        WHERE EXISTS (
+            SELECT 1
+            FROM family_bill AS fb
+            WHERE fb.account_id = fa.account_id
+        );
+    </update>
+</mapper>
