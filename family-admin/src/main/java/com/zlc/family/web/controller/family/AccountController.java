@@ -3,6 +3,7 @@ package com.zlc.family.web.controller.family;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.zlc.family.common.annotation.Log;
+import com.zlc.family.common.annotation.RepeatSubmit;
 import com.zlc.family.common.constant.FamilyConstants;
 import com.zlc.family.common.core.controller.BaseController;
 import com.zlc.family.common.core.domain.AjaxResult;
@@ -46,6 +47,18 @@ public class AccountController extends BaseController {
     }
 
     /**
+     * 初始化余额
+     */
+    @RepeatSubmit(message = "5s内只能重置一次，请稍后再试")
+    @Log(title = "家庭账户", businessType = BusinessType.OTHER)
+    @PreAuthorize("hasPermission('family:account:list')")
+    @PutMapping("/reset/balance")
+    public AjaxResult resetBalance() {
+        accountService.resetBalance();
+        return success();
+    }
+
+    /**
      * 获取家庭账户列表
      */
     @PreAuthorize("hasPermission('family:account:list')")
@@ -67,6 +80,7 @@ public class AccountController extends BaseController {
     /**
      * 新增家庭账户
      */
+    @RepeatSubmit
     @PreAuthorize("hasPermission('family:account:add')")
     @Log(title = "家庭账户", businessType = BusinessType.INSERT)
     @PostMapping
@@ -81,6 +95,7 @@ public class AccountController extends BaseController {
     /**
      * 修改家庭账户
      */
+    @RepeatSubmit
     @PreAuthorize("hasPermission('family:account:edit')")
     @Log(title = "家庭账户", businessType = BusinessType.UPDATE)
     @PutMapping

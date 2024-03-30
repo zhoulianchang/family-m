@@ -33,4 +33,5 @@ public interface IBillService extends IService<Bill> {
 
     boolean updateBill(Bill entity);
 
+    boolean removeBill(Long[] ids);
 }

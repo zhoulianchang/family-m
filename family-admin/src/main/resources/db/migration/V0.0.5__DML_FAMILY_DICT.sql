@@ -17,3 +17,4 @@ INSERT INTO ${schema}.`sys_role_menu`(`role_id`, `menu_id`) VALUES (5, 1076);
 INSERT INTO ${schema}.`sys_role_menu`(`role_id`, `menu_id`) VALUES (5, 1077);
 INSERT INTO ${schema}.`sys_role_menu`(`role_id`, `menu_id`) VALUES (5, 1078);
 INSERT INTO ${schema}.`sys_role_menu`(`role_id`, `menu_id`) VALUES (5, 1079);
+INSERT INTO ${schema}.`family_account`(`account_id`, `name`, `type`, `user_id`, `card_no`, `init_amount`, `balance`, `del_flag`, `create_by`, `create_time`, `update_by`, `update_time`, `remark`) VALUES (1, '农商(7170)', 1, 2, '6230910199124897170', 0.00, 0.00, 0, '夏薇旖', '2024-03-30 16:02:33', '', NULL, '生活开销常用卡');

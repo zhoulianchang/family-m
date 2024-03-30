@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS ${schema}.`family_account` (
     `name` varchar(30) DEFAULT '' COMMENT '账户别名',
     `type` tinyint(1) NOT NULL COMMENT '账户类型 1银行卡 2支付宝 3微信',
     `user_id` bigint NOT NULL COMMENT '所属用户id',
-    `card_no` varchar(16) DEFAULT NULL COMMENT '银行卡号',
+    `card_no` varchar(32) DEFAULT NULL COMMENT '银行卡号',
     `init_amount` decimal(10,2) NOT NULL COMMENT '账户初始余额 计算用',
     `balance` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '账户余额',
     `del_flag` tinyint(1) DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',

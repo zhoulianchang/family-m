@@ -3,6 +3,7 @@ package com.zlc.family.web.controller.family;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.zlc.family.common.annotation.Log;
+import com.zlc.family.common.annotation.RepeatSubmit;
 import com.zlc.family.common.constant.FamilyConstants;
 import com.zlc.family.common.core.controller.BaseController;
 import com.zlc.family.common.core.domain.AjaxResult;
@@ -78,6 +79,7 @@ public class FavorController extends BaseController {
     /**
      * 新增人情账薄
      */
+    @RepeatSubmit
     @PreAuthorize("hasPermission('family:favor:add')")
     @Log(title = "人情账薄", businessType = BusinessType.INSERT)
     @PostMapping
@@ -89,6 +91,7 @@ public class FavorController extends BaseController {
     /**
      * 修改人情账薄
      */
+    @RepeatSubmit
     @PreAuthorize("hasPermission('family:favor:edit')")
     @Log(title = "人情账薄", businessType = BusinessType.UPDATE)
     @PutMapping

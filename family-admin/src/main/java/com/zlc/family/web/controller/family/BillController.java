@@ -1,8 +1,7 @@
 package com.zlc.family.web.controller.family;
 
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.zlc.family.common.annotation.Log;
-import com.zlc.family.common.constant.FamilyConstants;
+import com.zlc.family.common.annotation.RepeatSubmit;
 import com.zlc.family.common.core.controller.BaseController;
 import com.zlc.family.common.core.domain.AjaxResult;
 import com.zlc.family.common.core.page.TableDataInfo;
@@ -82,6 +81,7 @@ public class BillController extends BaseController {
     /**
      * 新增账单
      */
+    @RepeatSubmit
     @PreAuthorize("hasPermission('family:bill:add')")
     @Log(title = "账单管理", businessType = BusinessType.INSERT)
     @PostMapping
@@ -95,6 +95,7 @@ public class BillController extends BaseController {
     /**
      * 修改账单
      */
+    @RepeatSubmit
     @PreAuthorize("hasPermission('family:bill:edit')")
     @Log(title = "账单管理", businessType = BusinessType.UPDATE)
     @PutMapping
@@ -114,7 +115,7 @@ public class BillController extends BaseController {
     @Log(title = "账单管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids) {
-        return toAjax(billService.update(new UpdateWrapper<Bill>().lambda().set(Bill::getDelFlag, FamilyConstants.DEL_YES).in(Bill::getBillId, ids)));
+        return toAjax(billService.removeBill(ids));
     }
 
     /**
