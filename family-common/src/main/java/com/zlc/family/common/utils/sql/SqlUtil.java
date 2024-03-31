@@ -25,6 +25,16 @@ public class SqlUtil {
     private static final int ORDER_BY_MAX_LENGTH = 500;
 
     /**
+     * 将前端的结束时间默认带上23点59分59秒
+     *
+     * @param endTime
+     * @return
+     */
+    public static String endTime(String endTime) {
+        return endTime + " 23:59:59";
+    }
+
+    /**
      * 检查字符，防止注入绕过
      */
     public static String escapeOrderBySql(String value) {

@@ -21,13 +21,13 @@
             AND type = #{query.type}
         </if>
         <if test="query.flow != null">
-            AND type = #{query.flow}
+            AND flow = #{query.flow}
         </if>
         <if test="query.params.beginTime != null and query.params.beginTime != ''"><!-- 开始时间检索 -->
             and pay_time &gt;= #{query.params.beginTime}
         </if>
         <if test="query.params.endTime != null and query.params.endTime != ''"><!-- 结束时间检索 -->
-            and pay_time &lt;= #{query.params.endTime}
+            and pay_time &lt;= concat(#{query.params.endTime},' 23:59:59')
         </if>
     </select>
     <select id="statsByFlow" resultType="com.zlc.family.manage.vo.BillStatsVo">
@@ -45,13 +45,13 @@
                     AND t1.type = #{query.type}
                 </if>
                 <if test="query.flow != null">
-                    AND t1.type = #{query.flow}
+                    AND t1.flow = #{query.flow}
                 </if>
                 <if test="query.params.beginTime != null and query.params.beginTime != ''"><!-- 开始时间检索 -->
                     and t1.pay_time &gt;= #{query.params.beginTime}
                 </if>
                 <if test="query.params.endTime != null and query.params.endTime != ''"><!-- 结束时间检索 -->
-                    and t1.pay_time &lt;= #{query.params.endTime}
+                    and t1.pay_time &lt;= concat(#{query.params.endTime},' 23:59:59')
                 </if>
             </if>
         GROUP BY
@@ -69,7 +69,7 @@
                 and pay_time &gt;= #{query.params.beginTime}
             </if>
             <if test="query.params.endTime != null and query.params.endTime != ''"><!-- 结束时间检索 -->
-                and pay_time &lt;= #{query.params.endTime}
+                and pay_time &lt;= concat(#{query.params.endTime},' 23:59:59')
             </if>
         </if>
         GROUP BY

@@ -13,9 +13,17 @@ public class FavorQuery extends BaseQuery {
      * 是否平账 1不需要 2已平账 3未平账
      */
     private Integer balanced;
+    /**
+     * 资金流向
+     */
+    private Integer flow;
 
     /**
      * 送/被送礼人
      */
     private String userNameLike;
+    /**
+     * 备注
+     */
+    private String remarkLike;
 }

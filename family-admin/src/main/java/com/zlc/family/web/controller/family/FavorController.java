@@ -13,6 +13,7 @@ import com.zlc.family.common.enums.Operator;
 import com.zlc.family.common.exception.family.FamilyException;
 import com.zlc.family.common.utils.StringUtils;
 import com.zlc.family.common.utils.poi.ExcelUtil;
+import com.zlc.family.common.utils.sql.SqlUtil;
 import com.zlc.family.manage.domain.Favor;
 import com.zlc.family.manage.query.FavorQuery;
 import com.zlc.family.manage.service.IFavorService;
@@ -53,17 +54,30 @@ public class FavorController extends BaseController {
         return getDataTable(list);
     }
 
+    /**
+     * 统计人情包金额
+     */
+    @PreAuthorize("hasPermission('family:favor:list')")
+    @GetMapping("/stats/amount")
+    public AjaxResult statsAmount(FavorQuery query) {
+        List<Favor> list = favorService.list(buildQW(query));
+        Favor favor = favorService.getOne(buildQW(query).select("sum(amount) as amount"));
+        return success(favor.getAmount());
+    }
+
     private QueryWrapper<Favor> buildQW(FavorQuery query) {
         QueryWrapper<Favor> qw = new QueryWrapper<>();
         qw.lambda().eq(Favor::getDelFlag, FamilyConstants.DEL_NO)
                 .eq(query.getBalanced() != null, Favor::getBalanced, query.getBalanced())
-                .like(StringUtils.isNotEmpty(query.getUserNameLike()), Favor::getUserName, query.getUserNameLike());
+                .eq(query.getFlow() != null, Favor::getFlow, query.getFlow())
+                .like(StringUtils.isNotEmpty(query.getUserNameLike()), Favor::getUserName, query.getUserNameLike())
+                .like(StringUtils.isNotEmpty(query.getRemarkLike()), Favor::getRemark, query.getRemarkLike());
         Optional.ofNullable(query.getParams().get("beginTime"))
                 .map(String::valueOf)
                 .ifPresent(beginTime -> qw.lambda().ge(Favor::getFavorTime, beginTime));
         Optional.ofNullable(query.getParams().get("endTime"))
                 .map(String::valueOf)
-                .ifPresent(endTime -> qw.lambda().le(Favor::getFavorTime, endTime));
+                .ifPresent(endTime -> qw.lambda().le(Favor::getFavorTime, SqlUtil.endTime(endTime)));
         return qw;
     }
 
