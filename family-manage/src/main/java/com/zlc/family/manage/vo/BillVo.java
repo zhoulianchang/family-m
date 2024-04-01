@@ -1,5 +1,6 @@
 package com.zlc.family.manage.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.zlc.family.common.annotation.Excel;
 import lombok.Data;
 
@@ -36,6 +37,7 @@ public class BillVo implements Serializable {
      */
     @NotNull(message = "账单支付时间不能为空")
     @Excel(name = "消费日期", dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date payTime;
     /**
      * 账单金额

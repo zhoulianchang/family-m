@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.zlc.family.common.core.domain.BaseEntityFlag;
 import com.zlc.family.common.enums.Operator;
 import lombok.Getter;
@@ -60,6 +61,7 @@ public class Bill extends BaseEntityFlag {
     /**
      * 账单支付日期
      */
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date payTime;
     /**
      * 所属账户别名
