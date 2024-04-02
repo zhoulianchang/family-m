@@ -152,6 +152,12 @@ public class BillServiceImpl extends ServiceImpl<BillMapper, Bill> implements IB
         return true;
     }
 
+    @Override
+    public List<EchartPieVo> statsByUserName(BillStatsQuery query) {
+        List<Bill> billList = getBaseMapper().statsByUser(query);
+        return billList.stream().collect(Collectors.mapping(bill -> new EchartPieVo(bill.getUserName(), bill.getAmount()), Collectors.toList()));
+    }
+
     private void updateAccount(Long accountId, BigDecimal realAmount) {
         accountMapper.update(null, new UpdateWrapper<Account>()
                 .lambda().setSql("balance = balance +" + realAmount)

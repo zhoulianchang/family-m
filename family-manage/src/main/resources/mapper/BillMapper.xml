@@ -75,4 +75,28 @@
         GROUP BY
             type
     </select>
+    <select id="statsByUser" resultType="com.zlc.family.manage.domain.Bill">
+        SELECT
+            CASE
+                WHEN user_name IS NULL OR user_name = '' THEN '夏周之家'
+                ELSE user_name
+            END AS user_name,
+            SUM( amount ) AS amount
+        FROM
+        family_bill
+        WHERE del_flag = 0 AND flow = 2
+        <if test="query!=null">
+            <if test="query.params.beginTime != null and query.params.beginTime != ''"><!-- 开始时间检索 -->
+                and pay_time &gt;= #{query.params.beginTime}
+            </if>
+            <if test="query.params.endTime != null and query.params.endTime != ''"><!-- 结束时间检索 -->
+                and pay_time &lt;= concat(#{query.params.endTime},' 23:59:59')
+            </if>
+        </if>
+        GROUP BY
+            CASE
+                WHEN user_name IS NULL OR user_name = '' THEN '夏周之家'
+                ELSE user_name
+            END;
+    </select>
 </mapper>

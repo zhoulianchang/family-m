@@ -30,4 +30,11 @@ public interface BillMapper extends BaseMapper<Bill> {
      * @return
      */
     List<Bill> statsByType(@Param("query") BillStatsQuery query);
+
+    /**
+     * 根据消费用户进行分组统计支出金额
+     * @param query
+     * @return
+     */
+    List<Bill> statsByUser(@Param("query") BillStatsQuery query);
 }

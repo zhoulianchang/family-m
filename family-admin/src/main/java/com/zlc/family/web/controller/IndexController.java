@@ -37,6 +37,16 @@ public class IndexController extends BaseController {
     }
 
     /**
+     * 统计支出账单根据用户
+     */
+    @PreAuthorize("hasPermission('family:bill:list')")
+    @GetMapping("/stats/bill/by/user")
+    public AjaxResult statsByUser(BillStatsQuery query) {
+        List<EchartPieVo> result = billService.statsByUserName(query);
+        return success(result);
+    }
+
+    /**
      * 查询账户余额
      */
     @PreAuthorize("hasPermission('family:account:list')")
