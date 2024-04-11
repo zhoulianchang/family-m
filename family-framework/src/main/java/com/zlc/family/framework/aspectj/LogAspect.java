@@ -1,11 +1,19 @@
 package com.zlc.family.framework.aspectj;
 
-import java.util.Collection;
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.alibaba.fastjson2.JSON;
+import com.zlc.family.common.annotation.Log;
+import com.zlc.family.common.core.domain.model.LoginUser;
+import com.zlc.family.common.enums.BusinessStatus;
+import com.zlc.family.common.enums.HttpMethod;
+import com.zlc.family.common.filter.PropertyPreExcludeFilter;
+import com.zlc.family.common.utils.DateUtils;
+import com.zlc.family.common.utils.SecurityUtils;
+import com.zlc.family.common.utils.ServletUtils;
+import com.zlc.family.common.utils.StringUtils;
+import com.zlc.family.common.utils.ip.IpUtils;
 import com.zlc.family.framework.manager.AsyncManager;
+import com.zlc.family.framework.manager.factory.AsyncFactory;
+import com.zlc.family.system.domain.SysOperLog;
 import org.apache.commons.lang3.ArrayUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -18,18 +26,11 @@ import org.springframework.core.NamedThreadLocal;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
-import com.alibaba.fastjson2.JSON;
-import com.zlc.family.common.annotation.Log;
-import com.zlc.family.common.core.domain.model.LoginUser;
-import com.zlc.family.common.enums.BusinessStatus;
-import com.zlc.family.common.enums.HttpMethod;
-import com.zlc.family.common.filter.PropertyPreExcludeFilter;
-import com.zlc.family.common.utils.SecurityUtils;
-import com.zlc.family.common.utils.ServletUtils;
-import com.zlc.family.common.utils.StringUtils;
-import com.zlc.family.common.utils.ip.IpUtils;
-import com.zlc.family.framework.manager.factory.AsyncFactory;
-import com.zlc.family.system.domain.SysOperLog;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * 操作日志记录处理
@@ -110,6 +111,7 @@ public class LogAspect {
             getControllerMethodDescription(joinPoint, controllerLog, operLog, jsonResult);
             // 设置消耗时间
             operLog.setCostTime(System.currentTimeMillis() - TIME_THREADLOCAL.get());
+            operLog.setOperTime(DateUtils.getNowDate());
             // 保存数据库
             AsyncManager.me().execute(AsyncFactory.recordOper(operLog));
         } catch (Exception exp) {
