@@ -1,6 +1,12 @@
 package com.zlc.family.web.controller.system;
 
 import com.zlc.family.common.annotation.Log;
+import com.zlc.family.common.config.FamilyConfig;
+import com.zlc.family.common.core.controller.BaseController;
+import com.zlc.family.common.core.domain.AjaxResult;
+import com.zlc.family.common.core.domain.entity.SysUser;
+import com.zlc.family.common.core.domain.model.LoginUser;
+import com.zlc.family.common.enums.BusinessType;
 import com.zlc.family.common.utils.SecurityUtils;
 import com.zlc.family.common.utils.StringUtils;
 import com.zlc.family.common.utils.file.FileUploadUtils;
@@ -8,20 +14,9 @@ import com.zlc.family.common.utils.file.MimeTypeUtils;
 import com.zlc.family.framework.web.service.TokenService;
 import com.zlc.family.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import com.zlc.family.common.config.FamilyConfig;
-import com.zlc.family.common.core.controller.BaseController;
-import com.zlc.family.common.core.domain.AjaxResult;
-import com.zlc.family.common.core.domain.entity.SysUser;
-import com.zlc.family.common.core.domain.model.LoginUser;
-import com.zlc.family.common.enums.BusinessType;
 
 /**
  * 个人信息 业务处理
@@ -80,6 +75,7 @@ public class SysProfileController extends BaseController {
      * 重置密码
      */
     @Log(title = "个人信息", businessType = BusinessType.UPDATE)
+    @PreAuthorize("hasPermission('system:user:edit')")
     @PutMapping("/updatePwd")
     public AjaxResult updatePwd(String oldPassword, String newPassword) {
         LoginUser loginUser = getLoginUser();
