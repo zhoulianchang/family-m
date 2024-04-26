@@ -1,10 +1,6 @@
 package com.zlc.family.common.annotation;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
  * 数据权限过滤注解
@@ -24,6 +20,18 @@ public @interface DataScope {
      * 用户表的别名
      */
     public String userAlias() default "";
+
+    /**
+     * 是否存在别名 默认true 如果false表示不存在别名即单表查询
+     * @return
+     */
+    public boolean existsAlias() default true;
+
+    /**
+     * 是否自定义Sql查询
+     * @return
+     */
+    public boolean useSql() default true;
 
     /**
      * 权限字符（用于多个角色匹配符合要求的权限）默认根据权限注解@ss获取，多个权限用逗号分隔开来

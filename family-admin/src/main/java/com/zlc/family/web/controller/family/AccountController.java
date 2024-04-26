@@ -1,6 +1,5 @@
 package com.zlc.family.web.controller.family;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.zlc.family.common.annotation.Log;
 import com.zlc.family.common.annotation.RepeatSubmit;
@@ -8,6 +7,7 @@ import com.zlc.family.common.constant.FamilyConstants;
 import com.zlc.family.common.core.controller.BaseController;
 import com.zlc.family.common.core.domain.AjaxResult;
 import com.zlc.family.common.core.page.TableDataInfo;
+import com.zlc.family.common.core.query.BaseQuery;
 import com.zlc.family.common.core.vo.BaseSelectVo;
 import com.zlc.family.common.enums.BusinessType;
 import com.zlc.family.common.enums.Operator;
@@ -40,9 +40,9 @@ public class AccountController extends BaseController {
      */
     @PreAuthorize("hasPermission('family:account:list')")
     @GetMapping("/list")
-    public TableDataInfo list() {
+    public TableDataInfo list(BaseQuery query) {
         startPage();
-        List<Account> list = accountService.list(new QueryWrapper<Account>().lambda().eq(Account::getDelFlag, FamilyConstants.DEL_NO));
+        List<Account> list = accountService.listAccount(query);
         return getDataTable(list);
     }
 
@@ -63,13 +63,13 @@ public class AccountController extends BaseController {
      */
     @PreAuthorize("hasPermission('family:account:list')")
     @GetMapping("/select")
-    public AjaxResult select() {
-        List<Account> list = accountService.list(new QueryWrapper<Account>().lambda().eq(Account::getDelFlag, FamilyConstants.DEL_NO).select(Account::getAccountId, Account::getName));
+    public AjaxResult select(BaseQuery query) {
+        List<Account> list = accountService.listAccount(query);
         return success(BaseSelectVo.init(list));
     }
 
     /**
-     * 获取家庭账户列表
+     * 获取家庭账户详情
      */
     @PreAuthorize("hasPermission('family:account:query')")
     @GetMapping("/{id}")

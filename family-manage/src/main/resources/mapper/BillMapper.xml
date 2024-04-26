@@ -4,76 +4,82 @@
 
     <select id="selectBillList" resultType="com.zlc.family.manage.vo.BillVo">
         SELECT
-            bill_id,
-            amount,
-            user_name,
-            type,
-            flow,
-            pay_time,
-            remark
+            fb.bill_id,
+            fb.amount,
+            fb.user_name,
+            fb.type,
+            fb.flow,
+            fb.pay_time,
+            fb.remark
         FROM
-            family_bill
-        WHERE del_flag = 0
+            family_bill as fb
+        WHERE fb.del_flag = 0
         <if test="query.userName != null and query.userName !=''">
-            AND user_name = #{query.userName}
+            AND fb.user_name = #{query.userName}
         </if>
         <if test="query.type != null">
-            AND type = #{query.type}
+            AND fb.type = #{query.type}
         </if>
         <if test="query.flow != null">
-            AND flow = #{query.flow}
+            AND fb.flow = #{query.flow}
         </if>
         <if test="query.params.beginTime != null and query.params.beginTime != ''"><!-- 开始时间检索 -->
-            and pay_time &gt;= #{query.params.beginTime}
+            and fb.pay_time &gt;= #{query.params.beginTime}
         </if>
         <if test="query.params.endTime != null and query.params.endTime != ''"><!-- 结束时间检索 -->
-            and pay_time &lt;= concat(#{query.params.endTime},' 23:59:59')
+            and fb.pay_time &lt;= concat(#{query.params.endTime},' 23:59:59')
         </if>
+        <!-- 数据范围过滤 -->
+        ${query.params.dataScope}
     </select>
     <select id="statsByFlow" resultType="com.zlc.family.manage.vo.BillStatsVo">
         SELECT
-            t1.flow,
-            sum( t1.amount ) as amount
+            fb.flow,
+            sum( fb.amount ) as amount
         FROM
-            family_bill t1
-        WHERE del_flag = 0
+            family_bill fb
+        WHERE fb.del_flag = 0
             <if test="query!=null">
                 <if test="query.userName != null and query.userName !=''">
-                    AND t1.user_name = #{query.userName}
+                    AND fb.user_name = #{query.userName}
                 </if>
                 <if test="query.type != null">
-                    AND t1.type = #{query.type}
+                    AND fb.type = #{query.type}
                 </if>
                 <if test="query.flow != null">
-                    AND t1.flow = #{query.flow}
+                    AND fb.flow = #{query.flow}
                 </if>
                 <if test="query.params.beginTime != null and query.params.beginTime != ''"><!-- 开始时间检索 -->
-                    and t1.pay_time &gt;= #{query.params.beginTime}
+                    and fb.pay_time &gt;= #{query.params.beginTime}
                 </if>
                 <if test="query.params.endTime != null and query.params.endTime != ''"><!-- 结束时间检索 -->
-                    and t1.pay_time &lt;= concat(#{query.params.endTime},' 23:59:59')
+                    and fb.pay_time &lt;= concat(#{query.params.endTime},' 23:59:59')
                 </if>
             </if>
+        <!-- 数据范围过滤 -->
+        ${query.params.dataScope}
         GROUP BY
-            flow
+            fb.flow
     </select>
     <select id="statsByType" resultType="com.zlc.family.manage.domain.Bill">
         SELECT
-            type,
-            SUM( amount ) AS amount
+            fb.type,
+            SUM( fb.amount ) AS amount
         FROM
-            family_bill
-        WHERE del_flag = 0
+            family_bill fb
+        WHERE fb.del_flag = 0
         <if test="query!=null">
             <if test="query.params.beginTime != null and query.params.beginTime != ''"><!-- 开始时间检索 -->
-                and pay_time &gt;= #{query.params.beginTime}
+                and fb.pay_time &gt;= #{query.params.beginTime}
             </if>
             <if test="query.params.endTime != null and query.params.endTime != ''"><!-- 结束时间检索 -->
-                and pay_time &lt;= concat(#{query.params.endTime},' 23:59:59')
+                and fb.pay_time &lt;= concat(#{query.params.endTime},' 23:59:59')
             </if>
         </if>
+        <!-- 数据范围过滤 -->
+        ${query.params.dataScope}
         GROUP BY
-            type
+            fb.type
     </select>
     <select id="statsByUser" resultType="com.zlc.family.manage.domain.Bill">
         SELECT
@@ -83,7 +89,7 @@
             END AS user_name,
             SUM( amount ) AS amount
         FROM
-        family_bill
+        family_bill fb
         WHERE del_flag = 0 AND flow = 2
         <if test="query!=null">
             <if test="query.params.beginTime != null and query.params.beginTime != ''"><!-- 开始时间检索 -->
@@ -93,6 +99,8 @@
                 and pay_time &lt;= concat(#{query.params.endTime},' 23:59:59')
             </if>
         </if>
+        <!-- 数据范围过滤 -->
+        ${query.params.dataScope}
         GROUP BY
             CASE
                 WHEN user_name IS NULL OR user_name = '' THEN '夏周之家'

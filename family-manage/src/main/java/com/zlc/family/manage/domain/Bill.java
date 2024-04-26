@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.zlc.family.common.core.domain.BaseEntityFlag;
 import com.zlc.family.common.enums.Operator;
+import com.zlc.family.common.utils.SecurityUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,6 +34,10 @@ public class Bill extends BaseEntityFlag {
      */
     @TableId(value = "bill_id", type = IdType.AUTO)
     private Long billId;
+    /**
+     * 账单所属部门
+     */
+    private Long deptId;
     /**
      * 所属账户编号
      */
@@ -74,5 +79,10 @@ public class Bill extends BaseEntityFlag {
 
     public Bill(Operator operator) {
         super(operator);
+        switch (operator) {
+            case CREATE:
+                this.setDeptId(SecurityUtils.getLoginUser().getUser().getDeptId());
+                break;
+        }
     }
 }

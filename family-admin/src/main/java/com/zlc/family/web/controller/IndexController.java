@@ -2,6 +2,7 @@ package com.zlc.family.web.controller;
 
 import com.zlc.family.common.core.controller.BaseController;
 import com.zlc.family.common.core.domain.AjaxResult;
+import com.zlc.family.common.core.query.BaseQuery;
 import com.zlc.family.common.core.vo.EchartPieVo;
 import com.zlc.family.manage.query.BillStatsQuery;
 import com.zlc.family.manage.service.IAccountService;
@@ -51,7 +52,7 @@ public class IndexController extends BaseController {
      */
     @PreAuthorize("hasPermission('family:account:list')")
     @GetMapping("/stats/account/balance")
-    public AjaxResult statsAccountBalance() {
-        return success(accountService.statsAccountBalance());
+    public AjaxResult statsAccountBalance(BaseQuery query) {
+        return success(accountService.statsAccountBalance(query));
     }
 }

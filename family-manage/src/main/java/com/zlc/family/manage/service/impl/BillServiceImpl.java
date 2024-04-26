@@ -2,6 +2,7 @@ package com.zlc.family.manage.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.zlc.family.common.annotation.DataScope;
 import com.zlc.family.common.constant.FamilyConstants;
 import com.zlc.family.common.core.vo.EchartPieVo;
 import com.zlc.family.common.enums.BillType;
@@ -45,6 +46,7 @@ public class BillServiceImpl extends ServiceImpl<BillMapper, Bill> implements IB
     private final AccountMapper accountMapper;
 
     @Override
+    @DataScope(deptAlias = "fb")
     public List<BillVo> selectBillList(BillQuery query) {
         return getBaseMapper().selectBillList(query);
     }
@@ -91,11 +93,13 @@ public class BillServiceImpl extends ServiceImpl<BillMapper, Bill> implements IB
     }
 
     @Override
+    @DataScope(deptAlias = "fb")
     public List<BillStatsVo> statsByFlow(BillQuery query) {
         return getBaseMapper().statsByFlow(query);
     }
 
     @Override
+    @DataScope(deptAlias = "fb")
     public Map<String, List<EchartPieVo>> statsByType(BillStatsQuery query) {
         // 获取分类统计后的账单数据
         List<Bill> billList = getBaseMapper().statsByType(query);
@@ -153,6 +157,7 @@ public class BillServiceImpl extends ServiceImpl<BillMapper, Bill> implements IB
     }
 
     @Override
+    @DataScope(deptAlias = "fb")
     public List<EchartPieVo> statsByUserName(BillStatsQuery query) {
         List<Bill> billList = getBaseMapper().statsByUser(query);
         return billList.stream().collect(Collectors.mapping(bill -> new EchartPieVo(bill.getUserName(), bill.getAmount()), Collectors.toList()));

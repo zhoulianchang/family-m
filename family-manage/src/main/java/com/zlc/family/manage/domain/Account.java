@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.zlc.family.common.core.domain.BaseEntityFlag;
 import com.zlc.family.common.enums.Operator;
+import com.zlc.family.common.utils.SecurityUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,6 +32,10 @@ public class Account extends BaseEntityFlag {
      */
     @TableId(value = "account_id", type = IdType.AUTO)
     private Long accountId;
+    /**
+     * 账单所属部门
+     */
+    private Long deptId;
     /**
      * 账户别名
      */
@@ -76,5 +81,15 @@ public class Account extends BaseEntityFlag {
     @Override
     public String getSelectName() {
         return this.name;
+    }
+
+    @Override
+    public void init(Operator operator) {
+        super.init(operator);
+        switch (operator) {
+            case CREATE:
+                this.setDeptId(SecurityUtils.getLoginUser().getUser().getDeptId());
+                break;
+        }
     }
 }
