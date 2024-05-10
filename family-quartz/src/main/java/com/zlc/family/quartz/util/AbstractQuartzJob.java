@@ -1,21 +1,22 @@
 package com.zlc.family.quartz.util;
 
-import java.util.Date;
-
+import com.zlc.family.common.constant.Constants;
+import com.zlc.family.common.constant.ScheduleConstants;
+import com.zlc.family.common.utils.DateUtils;
+import com.zlc.family.common.utils.ExceptionUtil;
+import com.zlc.family.common.utils.StringUtils;
+import com.zlc.family.common.utils.bean.BeanUtils;
+import com.zlc.family.common.utils.spring.SpringUtils;
 import com.zlc.family.quartz.domain.SysJob;
 import com.zlc.family.quartz.domain.SysJobLog;
+import com.zlc.family.quartz.service.ISysJobLogService;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.zlc.family.common.constant.Constants;
-import com.zlc.family.common.constant.ScheduleConstants;
-import com.zlc.family.common.utils.ExceptionUtil;
-import com.zlc.family.common.utils.StringUtils;
-import com.zlc.family.common.utils.bean.BeanUtils;
-import com.zlc.family.common.utils.spring.SpringUtils;
-import com.zlc.family.quartz.service.ISysJobLogService;
+
+import java.util.Date;
 
 /**
  * 抽象quartz调用
@@ -53,7 +54,7 @@ public abstract class AbstractQuartzJob implements Job {
      * @param sysJob  系统计划任务
      */
     protected void before(JobExecutionContext context, SysJob sysJob) {
-        threadLocal.set(new Date());
+        threadLocal.set(DateUtils.getNowDate());
     }
 
     /**
@@ -70,8 +71,9 @@ public abstract class AbstractQuartzJob implements Job {
         sysJobLog.setJobName(sysJob.getJobName());
         sysJobLog.setJobGroup(sysJob.getJobGroup());
         sysJobLog.setInvokeTarget(sysJob.getInvokeTarget());
+        sysJobLog.setCreateTime(startTime);
         sysJobLog.setStartTime(startTime);
-        sysJobLog.setStopTime(new Date());
+        sysJobLog.setStopTime(DateUtils.getNowDate());
         long runMs = sysJobLog.getStopTime().getTime() - sysJobLog.getStartTime().getTime();
         sysJobLog.setJobMessage(sysJobLog.getJobName() + " 总共耗时：" + runMs + "毫秒");
         if (e != null) {

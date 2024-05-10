@@ -1,6 +1,7 @@
 package com.zlc.family.framework.manager.factory;
 
 import com.zlc.family.common.constant.Constants;
+import com.zlc.family.common.utils.DateUtils;
 import com.zlc.family.common.utils.LogUtils;
 import com.zlc.family.common.utils.ServletUtils;
 import com.zlc.family.common.utils.StringUtils;
@@ -58,6 +59,7 @@ public class AsyncFactory {
                 SysLogininfor logininfor = new SysLogininfor();
                 logininfor.setUserName(username);
                 logininfor.setIpaddr(ip);
+                logininfor.setLoginTime(DateUtils.getNowDate());
                 logininfor.setLoginLocation(address);
                 logininfor.setBrowser(browser);
                 logininfor.setOs(os);
