@@ -14,6 +14,10 @@ public class BillQuery extends BaseQuery {
      */
     private String userName;
     /**
+     * 扣款账户
+     */
+    private Long accountId;
+    /**
      * 资金流向
      */
     private Integer flow;

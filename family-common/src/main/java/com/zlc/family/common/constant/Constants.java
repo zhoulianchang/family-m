@@ -12,6 +12,10 @@ public class Constants {
      * UTF-8 字符集
      */
     public static final String UTF8 = "UTF-8";
+    /**
+     * HmacSHA256算法
+     */
+    public static final String HMAC_SHA256 = "HmacSHA256";
 
     /**
      * GBK 字符集

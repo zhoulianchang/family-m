@@ -26,6 +26,9 @@ public class BillVo implements Serializable {
     @NotNull(message = "账户编号不能为空")
     private Long accountId;
 
+    @Excel(name = "账户编号",type = Excel.Type.EXPORT, prompt = "对应的是账户管理中的账户别名")
+    private String accountName;
+
     /**
      * 用户名称
      */

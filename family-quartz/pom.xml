@@ -34,6 +34,11 @@
             <groupId>com.zlc</groupId>
             <artifactId>family-common</artifactId>
         </dependency>
+        <!-- 通用工具-->
+        <dependency>
+            <groupId>com.zlc</groupId>
+            <artifactId>family-manage</artifactId>
+        </dependency>
 
     </dependencies>
 

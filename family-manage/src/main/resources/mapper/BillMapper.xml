@@ -10,15 +10,19 @@
             fb.type,
             fb.flow,
             fb.pay_time,
-            fb.remark
+            fb.remark,
+            fa.name as account_name
         FROM
-            family_bill as fb
-        WHERE fb.del_flag = 0
+            family_bill as fb JOIN family_account fa
+        WHERE fb.del_flag = 0 AND fb.account_id = fa.account_id
         <if test="query.userName != null and query.userName !=''">
             AND fb.user_name = #{query.userName}
         </if>
         <if test="query.type != null">
             AND fb.type = #{query.type}
+        </if>
+        <if test="query.accountId != null">
+            AND fb.account_id = #{query.accountId}
         </if>
         <if test="query.flow != null">
             AND fb.flow = #{query.flow}
@@ -42,6 +46,9 @@
             <if test="query!=null">
                 <if test="query.userName != null and query.userName !=''">
                     AND fb.user_name = #{query.userName}
+                </if>
+                <if test="query.accountId != null">
+                    AND fb.account_id = #{query.accountId}
                 </if>
                 <if test="query.type != null">
                     AND fb.type = #{query.type}
