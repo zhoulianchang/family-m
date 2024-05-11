@@ -37,6 +37,7 @@ public class AsyncFactory {
      */
     public static TimerTask recordLogininfor(final String username, final String status, final String message,
                                              final Object... args) {
+        DateUtils.setDefaultTimeZone();
         final UserAgent userAgent = UserAgent.parseUserAgentString(ServletUtils.getRequest().getHeader("User-Agent"));
         final String ip = IpUtils.getIpAddr();
         return new TimerTask() {
@@ -59,7 +60,7 @@ public class AsyncFactory {
                 SysLogininfor logininfor = new SysLogininfor();
                 logininfor.setUserName(username);
                 logininfor.setIpaddr(ip);
-                logininfor.setLoginTime(DateUtils.getNowDate());
+                logininfor.setLoginTime(DateUtils.getNowDate(Constants.TIME_GMT8));
                 logininfor.setLoginLocation(address);
                 logininfor.setBrowser(browser);
                 logininfor.setOs(os);

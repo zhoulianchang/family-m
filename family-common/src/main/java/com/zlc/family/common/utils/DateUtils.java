@@ -1,18 +1,23 @@
 package com.zlc.family.common.utils;
 
+import com.zlc.family.common.constant.Constants;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.lang.management.ManagementFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * 时间工具类
  *
  * @author family
  */
+@Slf4j
 public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     public static String YYYY = "yyyy";
 
@@ -36,6 +41,19 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      */
     public static Date getNowDate() {
         return new Date();
+    }
+
+    /**
+     * 带时区获取当前Date型日期
+     *
+     * @return Date() 当前日期
+     */
+    public static Date getNowDate(String timeZone) {
+        // 创建一个 Calendar 对象，并设置时区
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone(timeZone));
+        // 设置 Calendar 对象的时间为当前时间
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        return calendar.getTime();
     }
 
     /**
@@ -160,5 +178,9 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
         LocalDateTime localDateTime = LocalDateTime.of(temporalAccessor, LocalTime.of(0, 0, 0));
         ZonedDateTime zdt = localDateTime.atZone(ZoneId.systemDefault());
         return Date.from(zdt.toInstant());
+    }
+
+    public static void setDefaultTimeZone() {
+        TimeZone.setDefault(TimeZone.getTimeZone(Constants.TIME_GMT8));
     }
 }

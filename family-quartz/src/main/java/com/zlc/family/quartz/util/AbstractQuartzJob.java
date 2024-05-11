@@ -54,7 +54,7 @@ public abstract class AbstractQuartzJob implements Job {
      * @param sysJob  系统计划任务
      */
     protected void before(JobExecutionContext context, SysJob sysJob) {
-        threadLocal.set(DateUtils.getNowDate());
+        threadLocal.set(DateUtils.getNowDate(Constants.TIME_GMT8));
     }
 
     /**

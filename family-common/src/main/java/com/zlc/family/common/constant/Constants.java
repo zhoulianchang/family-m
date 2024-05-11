@@ -151,4 +151,8 @@ public class Constants {
      * 超级管理员权限
      */
     public static final String ALL_PERMISSION = "*:*:*";
+    /**
+     * 东八区时间
+     */
+    public static final String TIME_GMT8 = "Asia/Shanghai";
 }

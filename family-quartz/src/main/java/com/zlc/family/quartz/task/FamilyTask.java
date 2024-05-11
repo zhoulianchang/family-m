@@ -6,6 +6,7 @@ import com.zlc.family.common.core.domain.model.DingMsgBody;
 import com.zlc.family.common.enums.DingMsgType;
 import com.zlc.family.common.enums.MsgType;
 import com.zlc.family.common.notify.NotifyFactory;
+import com.zlc.family.common.utils.DateUtils;
 import com.zlc.family.common.utils.DingUtils;
 import com.zlc.family.manage.domain.Account;
 import com.zlc.family.manage.service.IAccountService;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -60,10 +62,12 @@ public class FamilyTask {
                 "* 账户别名：%s\n" +
                 "* 账户余额：%.2f\n" +
                 "* 账户号码：%s\n";
-        StringBuilder sb = new StringBuilder("### 账户详情\n");
+        StringBuilder sb = new StringBuilder("### 账户详情\n#### 总余额：%.2f\n");
+        BigDecimal totalSum = new BigDecimal(0);
         for (Account account : accountList) {
+            totalSum = totalSum.add(account.getBalance());
             sb.append(String.format(template, account.getName(), account.getBalance(), account.getCardNo()));
         }
-        return sb.toString();
+        return String.format(sb.toString(), totalSum);
     }
 }
