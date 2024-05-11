@@ -22,4 +22,19 @@ public interface IAccountService extends IService<Account> {
     void resetBalance();
 
     List<Account> listAccount(BaseQuery query);
+
+    /**
+     * 通知账户金额(多个)
+     *
+     * @param deptId 部门id
+     */
+    void notifyAccountAmount(Long deptId);
+
+    /**
+     * 通知账户金额(单个)
+     *
+     * @param accountId    账户id
+     * @param notifyTarget 通知的对象
+     */
+    void notifyAccountAmount(Long accountId, String notifyTarget);
 }

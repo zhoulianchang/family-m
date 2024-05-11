@@ -1,11 +1,11 @@
 package com.zlc.family.framework.manager;
 
+import com.zlc.family.common.utils.Threads;
+import com.zlc.family.common.utils.spring.SpringUtils;
+
 import java.util.TimerTask;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import com.zlc.family.common.utils.Threads;
-import com.zlc.family.common.utils.spring.SpringUtils;
 
 /**
  * 异步任务管理器
@@ -42,6 +42,17 @@ public class AsyncManager {
      */
     public void execute(TimerTask task) {
         executor.schedule(task, OPERATE_DELAY_TIME, TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * 执行任务
+     *
+     * @param task  任务
+     * @param delay 延迟多久
+     * @param unit  延迟时间单位
+     */
+    public void execute(TimerTask task, long delay, TimeUnit unit) {
+        executor.schedule(task, delay, unit);
     }
 
     /**

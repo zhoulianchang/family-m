@@ -8,6 +8,7 @@ import com.zlc.family.common.utils.StringUtils;
 import com.zlc.family.common.utils.ip.AddressUtils;
 import com.zlc.family.common.utils.ip.IpUtils;
 import com.zlc.family.common.utils.spring.SpringUtils;
+import com.zlc.family.manage.service.IAccountService;
 import com.zlc.family.system.domain.SysLogininfor;
 import com.zlc.family.system.domain.SysOperLog;
 import com.zlc.family.system.service.ISysLogininforService;
@@ -90,6 +91,39 @@ public class AsyncFactory {
                 // 远程查询操作地点
                 operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
                 SpringUtils.getBean(ISysOperLogService.class).insertOperlog(operLog);
+            }
+        };
+    }
+
+    /**
+     * 通知账户金额
+     *
+     * @param accountId 账户id
+     * @param mobile    手机号
+     * @return 任务task
+     */
+    public static TimerTask notifyAccountAmount(final Long accountId, final String mobile) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                // 根据id获取当前的account账户
+                SpringUtils.getBean(IAccountService.class).notifyAccountAmount(accountId, mobile);
+            }
+        };
+    }
+
+    /**
+     * 通知账户金额
+     *
+     * @param accountId 账户id
+     * @param mobile    手机号
+     * @return 任务task
+     */
+    public static TimerTask notifyAccountAmount(final Long deptId) {
+        return new TimerTask() {
+            @Override
+            public void run() {
+                SpringUtils.getBean(IAccountService.class).notifyAccountAmount(deptId);
             }
         };
     }

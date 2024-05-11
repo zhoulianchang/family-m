@@ -10,6 +10,10 @@ public class FamilyConstants {
      */
     public static final int DEL_NO = 0;
     /**
+     * 消息通知锁定时间 1分钟
+     */
+    public static final int MSG_LOCK_TIME = 1;
+    /**
      * 数据库已删除标志
      */
     public static final int DEL_YES = 2;

@@ -6,6 +6,7 @@ import com.dingtalk.api.request.OapiRobotSendRequest;
 import com.dingtalk.api.response.OapiRobotSendResponse;
 import com.taobao.api.ApiException;
 import com.zlc.family.common.config.DingMsgConfig;
+import com.zlc.family.common.constant.ErrorMsgCode;
 import com.zlc.family.common.core.domain.model.DingMsgBody;
 import com.zlc.family.common.exception.job.DingException;
 import com.zlc.family.common.utils.DingUtils;
@@ -25,7 +26,7 @@ public class DingMsgNotify extends MsgNotify<DingMsgBody> {
     public void sendMsg(DingMsgBody msgBody) {
         if (StringUtils.isEmpty(msgBody.getRobotKey()) || !DingMsgConfig.getRobots().containsKey(msgBody.getRobotKey())) {
             log.error("Ding message sending failure.config error");
-            throw new DingException("Ding message sending failure.config error");
+            throw new DingException(ErrorMsgCode.DING_SEND_ERROR_CONFIG);
         }
         // 1.获取钉钉机器人的配置信息
         DingMsgConfig.RobotConfig robotConfig = DingMsgConfig.getRobots().get(msgBody.getRobotKey());
@@ -33,7 +34,7 @@ public class DingMsgNotify extends MsgNotify<DingMsgBody> {
         DingTalkClient client = getDingTalkClient(robotConfig);
         if (client == null) {
             log.error("Ding message sending failure.not support type:{}", robotConfig.getType());
-            throw new DingException("Ding message sending failure.not support type");
+            throw new DingException(ErrorMsgCode.DING_SEND_ERROR_TYPE);
         }
         // 3.构造请求对象类
         OapiRobotSendRequest req = getReq(msgBody);
@@ -42,11 +43,11 @@ public class DingMsgNotify extends MsgNotify<DingMsgBody> {
             OapiRobotSendResponse rsp = client.execute(req, robotConfig.getToken());
             if (!rsp.isSuccess()) {
                 log.error("Ding message sending failure.code is :{},reason is :{}", rsp.getErrcode(), rsp.getErrmsg());
-                throw new DingException("Ding message sending failure," + rsp.getErrmsg());
+                throw new DingException(ErrorMsgCode.DING_SEND_ERROR, new Object[]{rsp.getErrmsg()});
             }
         } catch (ApiException e) {
             log.error("Ding message sending failure.code is :{},reason is :{}", e.getErrCode(), e.getErrMsg());
-            throw new DingException("Ding message sending failure," + e.getErrMsg());
+            throw new DingException(ErrorMsgCode.DING_SEND_ERROR, new Object[]{e.getErrMsg()});
         }
     }
 

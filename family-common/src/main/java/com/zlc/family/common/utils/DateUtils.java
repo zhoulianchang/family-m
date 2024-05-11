@@ -49,6 +49,9 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * @return Date() 当前日期
      */
     public static Date getNowDate(String timeZone) {
+        if (StringUtils.isEmpty(timeZone)) {
+            timeZone = Constants.TIME_GMT8;
+        }
         // 创建一个 Calendar 对象，并设置时区
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone(timeZone));
         // 设置 Calendar 对象的时间为当前时间
@@ -74,7 +77,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
     }
 
     public static final String dateTimeNow(final String format) {
-        return parseDateToStr(format, new Date());
+        return parseDateToStr(format, getNowDate(null));
     }
 
     public static final String dateTime(final Date date) {
@@ -97,16 +100,14 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
      * 日期路径 即年/月/日 如2018/08/08
      */
     public static final String datePath() {
-        Date now = new Date();
-        return DateFormatUtils.format(now, "yyyy/MM/dd");
+        return DateFormatUtils.format(getNowDate(null), "yyyy/MM/dd");
     }
 
     /**
      * 日期路径 即年/月/日 如20180808
      */
     public static final String dateTime() {
-        Date now = new Date();
-        return DateFormatUtils.format(now, "yyyyMMdd");
+        return DateFormatUtils.format(getNowDate(null), "yyyyMMdd");
     }
 
     /**

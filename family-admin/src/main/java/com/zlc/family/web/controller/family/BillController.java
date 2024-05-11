@@ -2,14 +2,19 @@ package com.zlc.family.web.controller.family;
 
 import com.zlc.family.common.annotation.Log;
 import com.zlc.family.common.annotation.RepeatSubmit;
+import com.zlc.family.common.constant.CacheConstants;
+import com.zlc.family.common.constant.FamilyConstants;
 import com.zlc.family.common.core.controller.BaseController;
 import com.zlc.family.common.core.domain.AjaxResult;
 import com.zlc.family.common.core.page.TableDataInfo;
+import com.zlc.family.common.core.redis.RedisCache;
 import com.zlc.family.common.enums.BusinessType;
 import com.zlc.family.common.enums.Operator;
 import com.zlc.family.common.exception.family.FamilyException;
 import com.zlc.family.common.utils.bean.BeanUtils;
 import com.zlc.family.common.utils.poi.ExcelUtil;
+import com.zlc.family.framework.manager.AsyncManager;
+import com.zlc.family.framework.manager.factory.AsyncFactory;
 import com.zlc.family.manage.domain.Account;
 import com.zlc.family.manage.domain.Bill;
 import com.zlc.family.manage.dto.BillDto;
@@ -27,6 +32,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <p>
@@ -42,6 +49,7 @@ import java.util.List;
 public class BillController extends BaseController {
     private final IBillService billService;
     private final IAccountService accountService;
+    private final RedisCache redisCache;
 
     /**
      * 获取账单列表
@@ -89,7 +97,10 @@ public class BillController extends BaseController {
         dto.setBillId(null);
         Bill entity = new Bill(Operator.CREATE);
         BeanUtils.copyBeanProp(entity, dto);
-        return toAjax(billService.saveBill(entity));
+        AjaxResult ajaxResult = toAjax(billService.saveBill(entity));
+        String phonenumber = getLoginUser().getUser().getPhonenumber();
+        executeTask(AsyncFactory.notifyAccountAmount(entity.getAccountId(), phonenumber), CacheConstants.getCacheKey(CacheConstants.MSG_NOTIFY_ACCOUNT, entity.getAccountId() + phonenumber));
+        return ajaxResult;
     }
 
     /**
@@ -105,7 +116,10 @@ public class BillController extends BaseController {
         }
         Bill entity = new Bill(Operator.UPDATE);
         BeanUtils.copyBeanProp(entity, dto);
-        return toAjax(billService.updateBill(entity));
+        AjaxResult ajaxResult = toAjax(billService.updateBill(entity));
+        String phonenumber = getLoginUser().getUser().getPhonenumber();
+        executeTask(AsyncFactory.notifyAccountAmount(entity.getAccountId(), phonenumber), CacheConstants.getCacheKey(CacheConstants.MSG_NOTIFY_ACCOUNT, entity.getAccountId() + phonenumber));
+        return ajaxResult;
     }
 
     /**
@@ -115,7 +129,22 @@ public class BillController extends BaseController {
     @Log(title = "账单管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids) {
-        return toAjax(billService.removeBill(ids));
+        AjaxResult ajaxResult = toAjax(billService.removeBill(ids));
+        executeTask(AsyncFactory.notifyAccountAmount(getLoginUser().getDeptId()), CacheConstants.getCacheKey(CacheConstants.MSG_NOTIFY_ACCOUNT, getLoginUser().getDeptId()));
+        return ajaxResult;
+    }
+
+    /**
+     * 根据缓存key来异步执行通知任务
+     *
+     * @param timerTask 具体任务
+     * @param cacheKey  缓存的key
+     */
+    private void executeTask(TimerTask timerTask, String cacheKey) {
+        if (!redisCache.hasKey(cacheKey)) {
+            AsyncManager.me().execute(timerTask, FamilyConstants.MSG_LOCK_TIME, TimeUnit.MINUTES);
+            redisCache.setCacheObject(cacheKey, FamilyConstants.MSG_LOCK_TIME, FamilyConstants.MSG_LOCK_TIME, TimeUnit.MINUTES);
+        }
     }
 
     /**

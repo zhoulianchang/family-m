@@ -1,6 +1,8 @@
 package com.zlc.family.common.notify;
 
+import com.zlc.family.common.constant.ErrorMsgCode;
 import com.zlc.family.common.enums.MsgType;
+import com.zlc.family.common.exception.job.DingException;
 
 /**
  * @author zlc
@@ -19,8 +21,7 @@ public class NotifyFactory {
             case DING:
                 return new DingMsgNotify();
             default:
-                break;
+                throw new DingException(ErrorMsgCode.DING_CREATE_ERROR);
         }
-        return null;
     }
 }

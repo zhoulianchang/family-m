@@ -40,4 +40,18 @@ public class CacheConstants {
      * 登录账户密码错误次数 redis key
      */
     public static final String PWD_ERR_CNT_KEY = "pwd_err_cnt:";
+    /**
+     * 消息通知之账户余额相关
+     */
+    public static final String MSG_NOTIFY_ACCOUNT = "msg_notify:account:%s";
+
+    /**
+     * 获取缓存key
+     * @param key
+     * @param args
+     * @return
+     */
+    public static String getCacheKey(String key, Object... args) {
+        return String.format(key, args);
+    }
 }

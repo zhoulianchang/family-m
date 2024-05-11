@@ -10,7 +10,11 @@ import com.zlc.family.common.exception.base.BaseException;
 public class DingException extends BaseException {
     private static final long serialVersionUID = 1L;
 
-    public DingException(String msg) {
-        super("quartz", null, null, msg);
+    public DingException(String code) {
+        super("quartz", code, null, null);
+    }
+
+    public DingException(String code, Object[] args) {
+        super("quartz", code, args, null);
     }
 }
