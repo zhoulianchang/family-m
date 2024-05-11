@@ -65,6 +65,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
         }
         // 2.发送钉钉消息推送
         DingMsgBody msgBody = new DingMsgBody(buildContext(accountList), true);
+        msgBody.setTitle("余额");
         NotifyFactory.createMsgNotify(MsgType.DING).sendMsg(msgBody);
     }
 
@@ -89,16 +90,17 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
     }
 
     @Override
-    public void notifyAccountAmount(Long accountId, String notifyTarget) {
+    public void notifyAccountAmount(Long accountId, BigDecimal amount, String notifyTarget) {
         if (StringUtils.isEmpty(notifyTarget)) {
             log.warn("not have any notify target,please check");
             return;
         }
         Account account = getById(accountId);
-        String template = "### 账户:%s\n---\n* 账户余额：%.2f\n* 账户号码：%s\n* 当前时间：%s\n";
+        String template = "### 账户:%s\n---\n* 账户余额：%.2f\n* 操作金额：%.2f\n* 操作时间：%s\n* 操作人：@%s\n";
         String now = DateUtils.dateTimeNow(DateUtils.YYYY_MM_DD_HH_MM_SS);
         // 2.发送钉钉消息推送
-        DingMsgBody msgBody = new DingMsgBody(String.format(template, account.getName(), account.getBalance(), account.getCardNo(), now));
+        DingMsgBody msgBody = new DingMsgBody(String.format(template, account.getName(), account.getBalance(), amount, now, notifyTarget));
+        msgBody.setTitle("余额");
         msgBody.setAtMobiles(Collections.singletonList(notifyTarget));
         NotifyFactory.createMsgNotify(MsgType.DING).sendMsg(msgBody);
     }

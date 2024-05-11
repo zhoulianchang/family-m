@@ -1,8 +1,12 @@
 package com.zlc.family.common.notify;
 
 import com.zlc.family.common.constant.ErrorMsgCode;
+import com.zlc.family.common.core.domain.model.DingMsgBody;
+import com.zlc.family.common.core.domain.model.MsgBody;
 import com.zlc.family.common.enums.MsgType;
 import com.zlc.family.common.exception.job.DingException;
+
+import java.util.Collections;
 
 /**
  * @author zlc

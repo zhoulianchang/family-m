@@ -17,6 +17,7 @@ import eu.bitwalker.useragentutils.UserAgent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.util.TimerTask;
 
 /**
@@ -102,12 +103,12 @@ public class AsyncFactory {
      * @param mobile    手机号
      * @return 任务task
      */
-    public static TimerTask notifyAccountAmount(final Long accountId, final String mobile) {
+    public static TimerTask notifyAccountAmount(final Long accountId, final BigDecimal amount, final String mobile) {
         return new TimerTask() {
             @Override
             public void run() {
                 // 根据id获取当前的account账户
-                SpringUtils.getBean(IAccountService.class).notifyAccountAmount(accountId, mobile);
+                SpringUtils.getBean(IAccountService.class).notifyAccountAmount(accountId, amount, mobile);
             }
         };
     }

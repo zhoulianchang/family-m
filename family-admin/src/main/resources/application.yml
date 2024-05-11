@@ -184,17 +184,16 @@ xss:
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
 
-# 钉钉消息推送机器人配置
+# 钉钉消息推送机器人配置 具体的机器人名称可以根据自身要求修改，如yuque、family就是机器人名称。同时同步修改DingUtils中的机器人名称即可
 ding-msg:
   url: https://oapi.dingtalk.com/robot/send
   robots:
     yuque:
-      token: f82641e50edb0f462db33094dcae958eb32bef83864b6eec02855587e240ba00
+      token: ${DING_YUQUE_TOKEN}
       type: 1
       keys:
         - 语雀
-        - 语雀2
     family:
-      token: eeef735861fa863455c7fc0e80831201d75dc5d109a3b186c43326ea0928cd93
+      token: ${DING_FAMILY_TOKEN}
       type: 2
-      secret: SECd3011d02fae84e62e19cdaa2eae29148c1f9c19e1dd36ee39de496376905d5be
+      secret: ${DING_FAMILY_SECRET}

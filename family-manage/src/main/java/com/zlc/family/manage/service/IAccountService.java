@@ -34,7 +34,8 @@ public interface IAccountService extends IService<Account> {
      * 通知账户金额(单个)
      *
      * @param accountId    账户id
+     * @param amount       本次操作金额
      * @param notifyTarget 通知的对象
      */
-    void notifyAccountAmount(Long accountId, String notifyTarget);
+    void notifyAccountAmount(Long accountId, BigDecimal amount, String notifyTarget);
 }
