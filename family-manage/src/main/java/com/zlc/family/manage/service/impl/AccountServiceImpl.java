@@ -22,6 +22,7 @@ import org.springframework.util.CollectionUtils;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -100,7 +101,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
         String template = "### 账户:%s\n---\n* 操作金额：%.2f\n* 备注：%s\n* 操作时间：%s\n* 操作人：@%s\n---\n### 余额：%.2f\n";
         String now = DateUtils.dateTimeNow(DateUtils.YYYY_MM_DD_HH_MM_SS);
         // 2.发送钉钉消息推送
-        DingMsgBody msgBody = new DingMsgBody(String.format(template, account.getName(), bill.getAmount(), bill.getRemark(), now, notifyTarget, account.getBalance()));
+        DingMsgBody msgBody = new DingMsgBody(String.format(template, account.getName(), bill.getAmount(), Optional.ofNullable(bill.getRemark()).orElse(""), now, notifyTarget, account.getBalance()));
         msgBody.setTitle("余额");
         msgBody.setAtMobiles(Collections.singletonList(notifyTarget));
         NotifyFactory.createMsgNotify(MsgType.DING).sendMsg(msgBody);

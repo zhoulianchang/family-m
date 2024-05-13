@@ -165,7 +165,7 @@ public class BillServiceImpl extends ServiceImpl<BillMapper, Bill> implements IB
         }
         // 因为一次删除理论上最多同时操作10个账户，所以挨个修改即可。 因为实际上不可能出现这种情况
         for (Map.Entry<Long, BigDecimal> entry : accountMap.entrySet()) {
-            accountMapper.update(null, new UpdateWrapper<Account>().lambda().set(Account::getBalance, entry.getValue().negate()).eq(Account::getAccountId, entry.getKey()));
+            updateAccount(entry.getKey(), entry.getValue().negate());
         }
         return true;
     }
