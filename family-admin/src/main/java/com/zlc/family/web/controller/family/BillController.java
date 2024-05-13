@@ -99,7 +99,7 @@ public class BillController extends BaseController {
         BeanUtils.copyBeanProp(entity, dto);
         AjaxResult ajaxResult = toAjax(billService.saveBill(entity));
         String phonenumber = getLoginUser().getUser().getPhonenumber();
-        AsyncManager.me().execute(AsyncFactory.notifyAccountAmount(entity.getAccountId(), dto.getAmount(), phonenumber));
+        AsyncManager.me().execute(AsyncFactory.notifyAccountAmount(entity, phonenumber));
         return ajaxResult;
     }
 
@@ -118,7 +118,7 @@ public class BillController extends BaseController {
         BeanUtils.copyBeanProp(entity, dto);
         AjaxResult ajaxResult = toAjax(billService.updateBill(entity));
         String phonenumber = getLoginUser().getUser().getPhonenumber();
-        AsyncManager.me().execute(AsyncFactory.notifyAccountAmount(entity.getAccountId(), dto.getAmount(), phonenumber));
+        AsyncManager.me().execute(AsyncFactory.notifyAccountAmount(entity, phonenumber));
         return ajaxResult;
     }
 

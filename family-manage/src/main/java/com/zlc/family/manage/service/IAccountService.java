@@ -3,6 +3,7 @@ package com.zlc.family.manage.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zlc.family.common.core.query.BaseQuery;
 import com.zlc.family.manage.domain.Account;
+import com.zlc.family.manage.domain.Bill;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -33,9 +34,8 @@ public interface IAccountService extends IService<Account> {
     /**
      * 通知账户金额(单个)
      *
-     * @param accountId    账户id
-     * @param amount       本次操作金额
+     * @param bill         账单信息
      * @param notifyTarget 通知的对象
      */
-    void notifyAccountAmount(Long accountId, BigDecimal amount, String notifyTarget);
+    void notifyAccountAmount(Bill bill, String notifyTarget);
 }

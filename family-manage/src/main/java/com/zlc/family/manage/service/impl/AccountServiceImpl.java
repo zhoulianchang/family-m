@@ -12,6 +12,7 @@ import com.zlc.family.common.utils.DateUtils;
 import com.zlc.family.common.utils.FamilyUtils;
 import com.zlc.family.common.utils.StringUtils;
 import com.zlc.family.manage.domain.Account;
+import com.zlc.family.manage.domain.Bill;
 import com.zlc.family.manage.mapper.AccountMapper;
 import com.zlc.family.manage.service.IAccountService;
 import lombok.extern.slf4j.Slf4j;
@@ -90,16 +91,16 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
     }
 
     @Override
-    public void notifyAccountAmount(Long accountId, BigDecimal amount, String notifyTarget) {
+    public void notifyAccountAmount(Bill bill, String notifyTarget) {
         if (StringUtils.isEmpty(notifyTarget)) {
             log.warn("not have any notify target,please check");
             return;
         }
-        Account account = getById(accountId);
-        String template = "### 账户:%s\n---\n* 账户余额：%.2f\n* 操作金额：%.2f\n* 操作时间：%s\n* 操作人：@%s\n";
+        Account account = getById(bill.getAccountId());
+        String template = "### 账户:%s\n---\n* 操作金额：%.2f\n* 备注：%s\n* 操作时间：%s\n* 操作人：@%s\n---\n### 余额：%.2f\n";
         String now = DateUtils.dateTimeNow(DateUtils.YYYY_MM_DD_HH_MM_SS);
         // 2.发送钉钉消息推送
-        DingMsgBody msgBody = new DingMsgBody(String.format(template, account.getName(), account.getBalance(), amount, now, notifyTarget));
+        DingMsgBody msgBody = new DingMsgBody(String.format(template, account.getName(), bill.getAmount(), bill.getRemark(), now, notifyTarget, account.getBalance()));
         msgBody.setTitle("余额");
         msgBody.setAtMobiles(Collections.singletonList(notifyTarget));
         NotifyFactory.createMsgNotify(MsgType.DING).sendMsg(msgBody);

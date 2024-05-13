@@ -8,6 +8,7 @@ import com.zlc.family.common.utils.StringUtils;
 import com.zlc.family.common.utils.ip.AddressUtils;
 import com.zlc.family.common.utils.ip.IpUtils;
 import com.zlc.family.common.utils.spring.SpringUtils;
+import com.zlc.family.manage.domain.Bill;
 import com.zlc.family.manage.service.IAccountService;
 import com.zlc.family.system.domain.SysLogininfor;
 import com.zlc.family.system.domain.SysOperLog;
@@ -17,7 +18,6 @@ import eu.bitwalker.useragentutils.UserAgent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigDecimal;
 import java.util.TimerTask;
 
 /**
@@ -103,12 +103,12 @@ public class AsyncFactory {
      * @param mobile    手机号
      * @return 任务task
      */
-    public static TimerTask notifyAccountAmount(final Long accountId, final BigDecimal amount, final String mobile) {
+    public static TimerTask notifyAccountAmount(final Bill bill, final String mobile) {
         return new TimerTask() {
             @Override
             public void run() {
                 // 根据id获取当前的account账户
-                SpringUtils.getBean(IAccountService.class).notifyAccountAmount(accountId, amount, mobile);
+                SpringUtils.getBean(IAccountService.class).notifyAccountAmount(bill, mobile);
             }
         };
     }
