@@ -8,6 +8,7 @@ import com.zlc.family.common.core.vo.EchartPieVo;
 import com.zlc.family.common.enums.BillType;
 import com.zlc.family.common.enums.Operator;
 import com.zlc.family.common.exception.ServiceException;
+import com.zlc.family.common.utils.FamilyUtils;
 import com.zlc.family.common.utils.bean.BeanUtils;
 import com.zlc.family.common.utils.bean.BeanValidators;
 import com.zlc.family.manage.domain.Account;
@@ -26,9 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -117,7 +116,7 @@ public class BillServiceImpl extends ServiceImpl<BillMapper, Bill> implements IB
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean saveBill(Bill entity) {
-        updateAccount(entity.getAccountId(), getAmount(entity));
+        updateAccount(entity.getAccountId(), FamilyUtils.getAmount(entity.getFlow(), entity.getAmount()));
         save(entity);
         return true;
     }
@@ -129,17 +128,17 @@ public class BillServiceImpl extends ServiceImpl<BillMapper, Bill> implements IB
         if (oldBill.getAccountId() != entity.getAccountId()) {
             // 如果账户id发生变化 那么需要将旧的撤回 新的做更新
             // 1. 先获取上一次的金额复原
-            BigDecimal lastAmountFixed = getAmount(oldBill).negate();
+            BigDecimal lastAmountFixed = FamilyUtils.getAmount(entity.getFlow(), entity.getAmount()).negate();
             updateAccount(oldBill.getAccountId(), lastAmountFixed);
             // 2. 再得到本次的金额
-            BigDecimal curAmount = getAmount(entity);
+            BigDecimal curAmount = FamilyUtils.getAmount(entity.getFlow(), entity.getAmount());
             updateAccount(entity.getAccountId(), curAmount);
         } else if (oldBill.getAmount().compareTo(entity.getAmount()) != 0 || oldBill.getFlow() != entity.getFlow()) {
             // 如果本次修改了金额或者是资金流向 那么账户余额也要重新计算
             // 1. 先获取上一次的金额复原
-            BigDecimal lastAmountFixed = getAmount(oldBill).negate();
+            BigDecimal lastAmountFixed = FamilyUtils.getAmount(entity.getFlow(), entity.getAmount()).negate();
             // 2. 再得到本次的金额
-            BigDecimal curAmount = getAmount(entity);
+            BigDecimal curAmount = FamilyUtils.getAmount(entity.getFlow(), entity.getAmount());
             // 3. 两次金额作加法 就是本次应该修改的金额
             BigDecimal realAmount = lastAmountFixed.add(curAmount);
             updateAccount(entity.getAccountId(), realAmount);
@@ -151,8 +150,23 @@ public class BillServiceImpl extends ServiceImpl<BillMapper, Bill> implements IB
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean removeBill(Long[] ids) {
+        // 1. 删除账单数据
         update(new UpdateWrapper<Bill>().lambda().set(Bill::getDelFlag, FamilyConstants.DEL_YES).in(Bill::getBillId, ids));
-        accountMapper.resetBalance();
+        // 2. 查询出所有的账单 并统计汇总 按照 accountId amount 存储并对account操作 恢复对应的金额数量
+        Map<Long, BigDecimal> accountMap = new HashMap<>();
+        List<Bill> billList = listByIds(Arrays.asList(ids));
+        for (Bill bill : billList) {
+            BigDecimal amount = FamilyUtils.getAmount(bill.getFlow(), bill.getAmount());
+            if (accountMap.containsKey(bill.getAccountId())) {
+                accountMap.put(bill.getAccountId(), accountMap.get(bill.getAccountId()).add(amount));
+            } else {
+                accountMap.put(bill.getAccountId(), amount);
+            }
+        }
+        // 因为一次删除理论上最多同时操作10个账户，所以挨个修改即可。 因为实际上不可能出现这种情况
+        for (Map.Entry<Long, BigDecimal> entry : accountMap.entrySet()) {
+            accountMapper.update(null, new UpdateWrapper<Account>().lambda().set(Account::getBalance, entry.getValue().negate()).eq(Account::getAccountId, entry.getKey()));
+        }
         return true;
     }
 
@@ -167,26 +181,5 @@ public class BillServiceImpl extends ServiceImpl<BillMapper, Bill> implements IB
         accountMapper.update(null, new UpdateWrapper<Account>()
                 .lambda().setSql("balance = balance +" + realAmount)
                 .eq(Account::getAccountId, accountId));
-    }
-
-    /**
-     * 获得本次金额的正负值
-     *
-     * @param entity
-     * @return
-     */
-    private BigDecimal getAmount(Bill entity) {
-        BigDecimal amount = null;
-        switch (entity.getFlow()) {
-            case FamilyConstants.BILL_FLOW_IN:
-                // 如果是收入 则新增
-                amount = entity.getAmount();
-                break;
-            case FamilyConstants.BILL_FLOW_OUT:
-                // 如果是支出 则减少
-                amount = entity.getAmount().negate();
-                break;
-        }
-        return amount;
     }
 }
