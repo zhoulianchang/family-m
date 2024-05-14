@@ -46,7 +46,8 @@ build/
 
 # Maven
 **/target/
-
+# 测试类
+family-admin/src/test/
 # VS Code
 .vscode/
 
