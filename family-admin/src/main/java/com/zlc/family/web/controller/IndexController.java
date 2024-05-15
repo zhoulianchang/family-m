@@ -4,7 +4,7 @@ import com.zlc.family.common.core.controller.BaseController;
 import com.zlc.family.common.core.domain.AjaxResult;
 import com.zlc.family.common.core.query.BaseQuery;
 import com.zlc.family.common.core.vo.EchartPieVo;
-import com.zlc.family.manage.query.BillStatsQuery;
+import com.zlc.family.manage.domain.query.BillStatsQuery;
 import com.zlc.family.manage.service.IAccountService;
 import com.zlc.family.manage.service.IBillService;
 import lombok.RequiredArgsConstructor;

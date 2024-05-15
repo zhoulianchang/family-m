@@ -1,4 +1,4 @@
-package com.zlc.family.manage.vo;
+package com.zlc.family.manage.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.zlc.family.common.annotation.Excel;

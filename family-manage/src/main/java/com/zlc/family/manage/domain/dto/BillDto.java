@@ -1,4 +1,4 @@
-package com.zlc.family.manage.dto;
+package com.zlc.family.manage.domain.dto;
 
 import lombok.Data;
 

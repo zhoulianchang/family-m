@@ -42,6 +42,10 @@ public class OssResult {
         this.msg = msg;
     }
 
+    public static OssResult ok() {
+        return new OssResult(OssCode.SUCCESS.getCode(), null, null, null);
+    }
+
     public static OssResult ok(String filePath, String url) {
         return new OssResult(OssCode.SUCCESS.getCode(), filePath, url, null);
     }

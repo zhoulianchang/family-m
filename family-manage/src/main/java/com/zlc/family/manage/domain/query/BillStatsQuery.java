@@ -1,4 +1,4 @@
-package com.zlc.family.manage.query;
+package com.zlc.family.manage.domain.query;
 
 import com.zlc.family.common.core.query.BaseQuery;
 import lombok.Data;

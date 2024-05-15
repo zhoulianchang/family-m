@@ -1,4 +1,4 @@
-package com.zlc.family.manage.vo;
+package com.zlc.family.manage.domain.vo;
 
 import lombok.Data;
 

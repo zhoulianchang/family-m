@@ -2,10 +2,10 @@ package com.zlc.family.manage.mapper;
 
 import com.zlc.family.manage.domain.Bill;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.zlc.family.manage.query.BillQuery;
-import com.zlc.family.manage.query.BillStatsQuery;
-import com.zlc.family.manage.vo.BillStatsVo;
-import com.zlc.family.manage.vo.BillVo;
+import com.zlc.family.manage.domain.query.BillQuery;
+import com.zlc.family.manage.domain.query.BillStatsQuery;
+import com.zlc.family.manage.domain.vo.BillStatsVo;
+import com.zlc.family.manage.domain.vo.BillVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

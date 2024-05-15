@@ -52,15 +52,29 @@ public class MinioC implements OssClient {
 
     @Override
     public OssResult uploadFile(File file, String fileName) {
-        return uploadFile(file, fileName, config.getDefaultBucket(), true);
+        String[] bucketAndOther = splitBucketAndOther(fileName);
+        return uploadFile(file, bucketAndOther[1], bucketAndOther[0], true);
+    }
+
+    @Override
+    public OssResult uploadFile(InputStream is, String fileName) {
+        String[] bucketAndOther = splitBucketAndOther(fileName);
+        return uploadFile(is, bucketAndOther[1], bucketAndOther[0], true);
     }
 
     @Override
     public OssResult uploadFile(File file, String fileName, String bucketName, Boolean limitFileSize) {
-        if (!bucketCreate(bucketName)) {
-            return OssResult.fail(OssCode.BUCKET_ERROR);
-        }
         BufferedInputStream is = FileUtil.getInputStream(file);
+        return realUpload(FileDto.builder()
+                .inputStream(is)
+                .fileName(fileName)
+                .bucketName(bucketName)
+                .limitFileSize(limitFileSize)
+                .build());
+    }
+
+    @Override
+    public OssResult uploadFile(InputStream is, String fileName, String bucketName, Boolean limitFileSize) {
         return realUpload(FileDto.builder()
                 .inputStream(is)
                 .fileName(fileName)
@@ -112,6 +126,9 @@ public class MinioC implements OssClient {
      * @return
      */
     private OssResult realUpload(FileDto fileDto) {
+        if (!bucketCreate(fileDto.getBucketName())) {
+            return OssResult.fail(OssCode.BUCKET_ERROR);
+        }
         try (InputStream inputStream = fileDto.getInputStream()) {
             int available = inputStream.available();
             long objectSize = available <= 0 ? -1L : available;
@@ -133,7 +150,7 @@ public class MinioC implements OssClient {
                     .stream(inputStream, objectSize, partSize)
                     .contentType(contentType)
                     .build());
-            return OssResult.ok(response.region().replace(config.getEndpoint(), ""), response.region());
+            return OssResult.ok();
         } catch (Exception e) {
             log.error("minio putObject error,reason is:{}", e.getMessage(), e);
             return OssResult.fail(OssCode.MINIO_ERROR.getCode(), e.getMessage());

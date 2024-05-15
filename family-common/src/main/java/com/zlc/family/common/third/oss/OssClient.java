@@ -1,6 +1,7 @@
 package com.zlc.family.common.third.oss;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -11,6 +12,7 @@ import java.util.List;
 public interface OssClient {
     /**
      * 上传文件-自定义路径
+     * fileName中包含桶名称
      *
      * @param file     上传文件
      * @param fileName 上传至OSS的文件完整路径，例：cf/abc.png
@@ -21,6 +23,17 @@ public interface OssClient {
 
     /**
      * 上传文件-自定义路径
+     * fileName中包含桶名称
+     *
+     * @param is       文件输入流
+     * @param fileName 上传至OSS的文件完整路径，例：cf/abc.png
+     *                 上传至根目录，例：abc.png
+     * @return
+     */
+    public OssResult uploadFile(InputStream is, String fileName);
+
+    /**
+     * 上传文件-自定义路径+桶名
      *
      * @param file          上传文件
      * @param fileName      上传至OSS的文件完整路径，例：cf/abc.png
@@ -30,6 +43,18 @@ public interface OssClient {
      * @return
      */
     public OssResult uploadFile(File file, String fileName, String bucketName, Boolean limitFileSize);
+
+    /**
+     * 上传文件-自定义路径+桶名
+     *
+     * @param file          上传文件
+     * @param fileName      上传至OSS的文件完整路径，例：cf/abc.png
+     *                      上传至根目录，例：abc.png
+     * @param bucketName    桶名
+     * @param limitFileSize 是否开启文件大小限制
+     * @return
+     */
+    public OssResult uploadFile(InputStream is, String fileName, String bucketName, Boolean limitFileSize);
 
     /**
      * 通过文件名下载文件

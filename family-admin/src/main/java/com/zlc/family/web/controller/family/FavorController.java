@@ -15,7 +15,7 @@ import com.zlc.family.common.utils.StringUtils;
 import com.zlc.family.common.utils.poi.ExcelUtil;
 import com.zlc.family.common.utils.sql.SqlUtil;
 import com.zlc.family.manage.domain.Favor;
-import com.zlc.family.manage.query.FavorQuery;
+import com.zlc.family.manage.domain.query.FavorQuery;
 import com.zlc.family.manage.service.IFavorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;

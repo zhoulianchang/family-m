@@ -28,6 +28,14 @@ public class FamilyException extends BaseException {
         FAVOR_RELATION_ID_ERROR("favor.relation.id.error"),
         BILL_ID_NULL("bill.id.null"),
         BILL_ID_EXISTS("bill.id.exists"),
+        FILE_ONLY_HANG_DIR("file.only.hang.dir"),
+        FILE_NAME_REPEAT("file.name.repeat"),
+        FILE_UPLOAD_ERROR("file.upload.error"),
+        FILE_NAME_EMPTY("file.name.empty"),
+        FILE_REMOVE_HAVE_CHILDREN("file.remove.have.children"),
+        FILE_REMOVE_ERROR("file.remove.error"),
+        FILE_NOT_EXISTS("file.not.exists"),
+        FILE_UPDATE_NOT_SUPPORT_TYPE("file.update.not.support.type"),
         ;
         private String code;
 
