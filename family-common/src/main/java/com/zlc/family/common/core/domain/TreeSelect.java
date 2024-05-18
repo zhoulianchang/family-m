@@ -1,12 +1,13 @@
 package com.zlc.family.common.core.domain;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.zlc.family.common.core.domain.entity.SysDept;
 import com.zlc.family.common.core.domain.entity.SysMenu;
+import com.zlc.family.common.core.vo.BaseTreeVo;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Treeselect树结构实体类
@@ -46,6 +47,15 @@ public class TreeSelect implements Serializable {
         this.id = menu.getMenuId();
         this.label = menu.getMenuName();
         this.children = menu.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
+    }
+
+    public TreeSelect(Object o) {
+        if (o instanceof BaseTreeVo) {
+            BaseTreeVo<?> vo = (BaseTreeVo<?>) o;
+            this.id = vo.getId();
+            this.label = vo.getLabel();
+            this.children = vo.getChildren().stream().map(TreeSelect::new).collect(Collectors.toList());
+        }
     }
 
     public Long getId() {

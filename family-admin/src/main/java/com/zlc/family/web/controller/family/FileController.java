@@ -6,8 +6,10 @@ import com.zlc.family.common.core.controller.BaseController;
 import com.zlc.family.common.core.domain.AjaxResult;
 import com.zlc.family.common.core.page.TableDataInfo;
 import com.zlc.family.common.enums.BusinessType;
+import com.zlc.family.common.enums.manage.FileType;
 import com.zlc.family.common.exception.file.InvalidExtensionException;
 import com.zlc.family.common.utils.DateUtils;
+import com.zlc.family.common.utils.FamilyUtils;
 import com.zlc.family.manage.domain.FamilyFile;
 import com.zlc.family.manage.domain.query.FileQuery;
 import com.zlc.family.manage.service.IFileService;
@@ -38,13 +40,24 @@ public class FileController extends BaseController {
     }
 
     /**
+     * 获取文件列表（树状）
+     */
+    @PreAuthorize("hasPermission('family:file:list')")
+    @GetMapping("/tree")
+    public AjaxResult tree(FileQuery query) {
+        // 树状仅仅支持查询目录
+        query.setType(FileType.DIR);
+        return AjaxResult.success(FamilyUtils.buildTreeSelect(fileService.listFile(query)));
+    }
+
+    /**
      * 新增文件
      */
     @RepeatSubmit
     @PreAuthorize("hasPermission('family:file:add')")
     @Log(title = "文件管理", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestParam("realFile") MultipartFile realFile, @Validated FamilyFile file) throws InvalidExtensionException {
+    public AjaxResult add(@RequestParam(value = "realFile", required = false) MultipartFile realFile, @Validated FamilyFile file) throws InvalidExtensionException {
         file.setFileId(null);
         file.setDeptId(getDeptId());
         file.setCreateBy(getUsername());
@@ -58,7 +71,7 @@ public class FileController extends BaseController {
     @RepeatSubmit
     @PreAuthorize("hasPermission('family:file:edit')")
     @Log(title = "文件管理", businessType = BusinessType.UPDATE)
-    @PostMapping
+    @PutMapping
     public AjaxResult update(@Validated FamilyFile file) {
         file.setDeptId(getDeptId());
         file.setUpdateBy(getUsername());

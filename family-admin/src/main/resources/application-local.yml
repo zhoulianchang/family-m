@@ -34,3 +34,14 @@ spring:
 logging:
   level:
     com.zlc: debug
+oss:
+  # minio配置
+  minio:
+    # 是否启用
+    enable: true
+    # 默认的桶名
+    default-bucket: test
+    # 上传文件最大体积，单位MB
+    file-max-size: 100
+    # 临时生成的url 过期时间 单位s
+    policy-expire: 300

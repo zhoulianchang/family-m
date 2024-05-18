@@ -200,18 +200,10 @@ ding-msg:
 oss:
   # minio配置
   minio:
-    # 是否启用
-    enable: true
     # 认证密钥
     access-key: ${MINIO_ACCESS_KEY}
     secret-key: ${MINIO_SECRET_KEY}
     # 内网地址
-    endpoint: http://www.zlcxwy.top:9000
+    endpoint: ${MINIO_ENDPOINT}
     # 外网地址
-    foreign-endpoint: http://www.zlcxwy.top:9000
-    # 默认的桶名
-    default-bucket: family
-    # 上传文件最大体积，单位MB
-    file-max-size: 100
-    # 临时生成的url 过期时间 单位s
-    policy-expire: 300
+    foreign-endpoint: ${MINIO_FOREIGN_ENDPOINT}

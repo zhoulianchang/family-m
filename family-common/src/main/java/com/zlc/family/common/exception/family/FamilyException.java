@@ -36,6 +36,7 @@ public class FamilyException extends BaseException {
         FILE_REMOVE_ERROR("file.remove.error"),
         FILE_NOT_EXISTS("file.not.exists"),
         FILE_UPDATE_NOT_SUPPORT_TYPE("file.update.not.support.type"),
+        FILE_REAL_NOT_UPLOAD("file.real.not.upload"),
         ;
         private String code;
 

@@ -27,10 +27,21 @@ spring:
         url:
         username:
         password:
-#      statViewServlet:
-#        # 控制台管理用户名和密码
-#        login-username: family
-#        login-password: 123456
+      statViewServlet:
+        # 控制台管理用户名和密码
+        login-username: family
+        login-password: 123456
 logging:
   level:
     com.zlc: warn
+oss:
+  # minio配置
+  minio:
+    # 是否启用
+    enable: true
+    # 默认的桶名
+    default-bucket: family
+    # 上传文件最大体积，单位MB
+    file-max-size: 100
+    # 临时生成的url 过期时间 单位s
+    policy-expire: 300

@@ -5,9 +5,11 @@ import java.util.List;
 
 /**
  * Tree基类
+ * 已经废弃不再使用 请使用BaseTreeEntity
  *
  * @author family
  */
+@Deprecated
 public class TreeEntity extends BaseEntity {
     private static final long serialVersionUID = 1L;
 

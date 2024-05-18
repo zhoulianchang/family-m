@@ -80,6 +80,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FamilyFile> impleme
             familyFile.setAncestors(parentFile.getAncestors() + "," + familyFile.getParentId());
         }
         if (FileType.FILE.equals(familyFile.getType())) {
+            AssertUtils.isNull(realFile, FamilyException.Code.FILE_REAL_NOT_UPLOAD);
             fileExt = new FileExt();
             familyFile.setName(realFile.getOriginalFilename());
             fileExt.setPlace(Optional.ofNullable(fileExt.getPlace()).orElse(FileExtPlace.MINIO));
@@ -151,7 +152,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FamilyFile> impleme
         }
         for (FileExt fileExt : fileExtList) {
             boolean result = OssClientFactory.create(OssType.MINIO).deleteFile(fileExt.getFilePath());
-            AssertUtils.isTrue(result, FamilyException.Code.FILE_REMOVE_ERROR);
+            AssertUtils.isFalse(result, FamilyException.Code.FILE_REMOVE_ERROR);
         }
         return true;
     }

@@ -2,6 +2,7 @@ package com.zlc.family.manage.domain.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.zlc.family.common.core.vo.BaseTreeVo;
 import com.zlc.family.common.enums.manage.FileType;
 import com.zlc.family.manage.domain.FileExt;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import java.io.Serializable;
  */
 @Getter
 @Setter
-public class FileVo implements Serializable {
+public class FileVo extends BaseTreeVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -43,4 +44,14 @@ public class FileVo implements Serializable {
      */
     private String remark;
     private FileExt fileExt;
+
+    public void setFileId(Long fileId) {
+        this.fileId = fileId;
+        this.setId(fileId);
+    }
+
+    public void setName(String name) {
+        this.name = name;
+        this.setLabel(name);
+    }
 }

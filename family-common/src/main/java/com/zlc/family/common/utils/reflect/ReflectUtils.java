@@ -1,13 +1,6 @@
 package com.zlc.family.common.utils.reflect;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.Date;
-
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.zlc.family.common.core.text.Convert;
 import com.zlc.family.common.utils.DateUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -15,6 +8,9 @@ import org.apache.commons.lang3.Validate;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.*;
+import java.util.Date;
 
 /**
  * 反射工具类. 提供调用getter/setter方法, 访问私有变量, 调用私有方法, 获取泛型类型Class, 被AOP过的真实类等工具函数.
@@ -73,6 +69,20 @@ public class ReflectUtils {
             logger.debug("在 [" + obj.getClass() + "] 中，没有找到 [" + fieldName + "] 字段 ");
             return null;
         }
+        E result = null;
+        try {
+            result = (E) field.get(obj);
+        } catch (IllegalAccessException e) {
+            logger.error("不可能抛出的异常{}", e.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * 直接读取必定存在的对象属性值, 无视private/protected修饰符, 不经过getter函数.
+     */
+    @SuppressWarnings("unchecked")
+    public static <E> E getFieldValue(final Field field, final Object obj) {
         E result = null;
         try {
             result = (E) field.get(obj);
@@ -261,6 +271,24 @@ public class ReflectUtils {
                 || Modifier.isFinal(field.getModifiers())) && !field.isAccessible()) {
             field.setAccessible(true);
         }
+    }
+
+    /**
+     * 查找范型类的字段是否带有 @TableId 注解，并返回该字段
+     *
+     * @param clazz 类
+     * @return 带有 @TableId 注解的字段，如果找到则返回字段对象，否则返回 null
+     */
+    public static <T> Field findTableIdField(Class<T> clazz) {
+        Field[] fields = clazz.getDeclaredFields(); // 获取类的所有字段
+        for (Field field : fields) {
+            TableId tableIdAnnotation = field.getDeclaredAnnotation(TableId.class); // 获取字段上的 @TableId 注解
+            if (tableIdAnnotation != null) {
+                makeAccessible(field);
+                return field; // 如果找到带有 @TableId 注解的字段，则返回该字段对象
+            }
+        }
+        return null; // 如果未找到带有 @TableId 注解的字段，则返回 null
     }
 
     /**
