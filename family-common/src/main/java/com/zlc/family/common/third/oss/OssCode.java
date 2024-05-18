@@ -9,7 +9,7 @@ public enum OssCode {
     IO_ERROR(500, "io error"),
     MINIO_ERROR(10000, "minio sdk error"),
     BUCKET_ERROR(10001, "bucket_error"),
-    EXCEED_MAX_SIZE(10002, "The file size exceeds the limit.");
+    EXCEED_MAX_SIZE(10002, "文件大小超过限制.");
     private int code;
     private String reason;
 

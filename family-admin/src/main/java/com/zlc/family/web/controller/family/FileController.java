@@ -72,7 +72,7 @@ public class FileController extends BaseController {
     @PreAuthorize("hasPermission('family:file:edit')")
     @Log(title = "文件管理", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult update(@Validated FamilyFile file) {
+    public AjaxResult update(@Validated @RequestBody FamilyFile file) {
         file.setDeptId(getDeptId());
         file.setUpdateBy(getUsername());
         file.setUpdateTime(DateUtils.getNowDate());

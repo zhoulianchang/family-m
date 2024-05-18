@@ -108,12 +108,10 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FamilyFile> impleme
         } else {
             AssertUtils.isEmpty(familyFile.getName(), FamilyException.Code.FILE_NAME_EMPTY);
         }
+        long count = count(new QueryWrapper<FamilyFile>().lambda().eq(FamilyFile::getDelFlag, FamilyConstants.DEL_NO).eq(FamilyFile::getName, familyFile.getName()).eq(FamilyFile::getParentId, familyFile.getParentId()));
+        AssertUtils.isTrue(count > 0, FamilyException.Code.FILE_NAME_REPEAT, new Object[]{familyFile.getParentId() + "-" + familyFile.getName()});
         // 进行数据库操作
-        try {
-            save(familyFile);
-        } catch (DuplicateKeyException e) {
-            throw new FamilyException(FamilyException.Code.FILE_NAME_REPEAT, new Object[]{familyFile.getParentId() + "-" + familyFile.getName()});
-        }
+        save(familyFile);
         Optional.ofNullable(fileExt).ifPresent(ext -> {
             ext.setFileId(familyFile.getFileId());
             fileExtMapper.insert(ext);
@@ -141,7 +139,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FamilyFile> impleme
     @Transactional(rollbackFor = Exception.class)
     public boolean removeFile(Long[] ids) {
         // 删除前先校验有无子节点
-        long count = count(new QueryWrapper<FamilyFile>().lambda().in(FamilyFile::getParentId, ids));
+        long count = count(new QueryWrapper<FamilyFile>().lambda().eq(FamilyFile::getDelFlag, FamilyConstants.DEL_NO).in(FamilyFile::getParentId, ids));
         AssertUtils.isTrue(count > 0, FamilyException.Code.FILE_REMOVE_HAVE_CHILDREN);
         // 更新所有文件的删除标识
         update(new UpdateWrapper<FamilyFile>().lambda().set(FamilyFile::getDelFlag, FamilyConstants.DEL_YES).in(FamilyFile::getFileId, ids));

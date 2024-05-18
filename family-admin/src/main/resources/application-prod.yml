@@ -42,6 +42,6 @@ oss:
     # 默认的桶名
     default-bucket: family
     # 上传文件最大体积，单位MB
-    file-max-size: 100
+    file-max-size: 80
     # 临时生成的url 过期时间 单位s
     policy-expire: 300

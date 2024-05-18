@@ -3,6 +3,7 @@ package com.zlc.family.common.utils.file;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Locale;
 import java.util.Objects;
 
 import org.apache.commons.io.FilenameUtils;
@@ -193,6 +194,6 @@ public class FileUploadUtils {
         if (StringUtils.isEmpty(extension)) {
             extension = MimeTypeUtils.getExtension(Objects.requireNonNull(file.getContentType()));
         }
-        return extension;
+        return extension.toLowerCase(Locale.ROOT);
     }
 }
