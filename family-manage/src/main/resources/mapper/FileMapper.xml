@@ -8,6 +8,8 @@
         <result column="name" property="name"/>
         <result column="parent_id" property="parentId"/>
         <result column="ancestors" property="ancestors"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
         <result column="remark" property="remark"/>
         <association property="fileExt" javaType="com.zlc.family.manage.domain.FileExt">
             <id column="file_path" property="filePath"/>
@@ -24,6 +26,9 @@
             f.`name`,
             f.parent_id,
             f.ancestors,
+            f.remark,
+            f.create_by,
+            f.create_time,
             f.remark,
             fe.file_path,
             fe.file_size,

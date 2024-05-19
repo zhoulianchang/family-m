@@ -24,7 +24,6 @@ import com.zlc.family.manage.mapper.FileExtMapper;
 import com.zlc.family.manage.mapper.FileMapper;
 import com.zlc.family.manage.service.IFileService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -82,7 +81,6 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FamilyFile> impleme
         if (FileType.FILE.equals(familyFile.getType())) {
             AssertUtils.isNull(realFile, FamilyException.Code.FILE_REAL_NOT_UPLOAD);
             fileExt = new FileExt();
-            familyFile.setName(realFile.getOriginalFilename());
             fileExt.setPlace(Optional.ofNullable(fileExt.getPlace()).orElse(FileExtPlace.MINIO));
             StringBuilder sb = new StringBuilder();
             if (FileExtPlace.MINIO.equals(fileExt.getPlace())) {
@@ -105,10 +103,8 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FamilyFile> impleme
                 // 当前文件格式不支持
                 throw new InvalidExtensionException(MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION, fileExt.getFileType(), realFile.getOriginalFilename());
             }
-        } else {
-            AssertUtils.isEmpty(familyFile.getName(), FamilyException.Code.FILE_NAME_EMPTY);
         }
-        long count = count(new QueryWrapper<FamilyFile>().lambda().eq(FamilyFile::getDelFlag, FamilyConstants.DEL_NO).eq(FamilyFile::getName, familyFile.getName()).eq(FamilyFile::getParentId, familyFile.getParentId()));
+        long count = count(new QueryWrapper<FamilyFile>().lambda().eq(FamilyFile::getDelFlag, FamilyConstants.DEL_NO).eq(FamilyFile::getName, familyFile.getName()).eq(FamilyFile::getParentId, familyFile.getParentId()).eq(familyFile.getDeptId() != null, FamilyFile::getDeptId, familyFile.getDeptId()));
         AssertUtils.isTrue(count > 0, FamilyException.Code.FILE_NAME_REPEAT, new Object[]{familyFile.getParentId() + "-" + familyFile.getName()});
         // 进行数据库操作
         save(familyFile);

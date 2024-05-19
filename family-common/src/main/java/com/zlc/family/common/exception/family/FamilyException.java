@@ -32,6 +32,7 @@ public class FamilyException extends BaseException {
         FILE_NAME_REPEAT("file.name.repeat"),
         FILE_UPLOAD_ERROR("file.upload.error"),
         FILE_NAME_EMPTY("file.name.empty"),
+        FILE_NAME_LENGTH("file.name.length"),
         FILE_REMOVE_HAVE_CHILDREN("file.remove.have.children"),
         FILE_REMOVE_ERROR("file.remove.error"),
         FILE_NOT_EXISTS("file.not.exists"),

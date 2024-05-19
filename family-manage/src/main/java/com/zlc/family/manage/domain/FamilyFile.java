@@ -9,7 +9,9 @@ import com.zlc.family.common.enums.manage.FileType;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * <p>
@@ -41,6 +43,8 @@ public class FamilyFile extends BaseEntityFlag {
     /**
      * 文件名称
      */
+    @NotBlank(message = "文件名称不能为空")
+    @Size(min = 0, max = 128, message = "文件名称长度不能超过128个字符")
     private String name;
 
     /**
