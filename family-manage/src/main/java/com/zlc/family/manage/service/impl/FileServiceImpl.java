@@ -16,6 +16,7 @@ import com.zlc.family.common.third.oss.OssType;
 import com.zlc.family.common.utils.AssertUtils;
 import com.zlc.family.common.utils.file.FileUploadUtils;
 import com.zlc.family.common.utils.file.MimeTypeUtils;
+import com.zlc.family.common.utils.uuid.IdUtils;
 import com.zlc.family.manage.domain.FamilyFile;
 import com.zlc.family.manage.domain.FileExt;
 import com.zlc.family.manage.domain.query.FileQuery;
@@ -82,6 +83,8 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FamilyFile> impleme
             AssertUtils.isNull(realFile, FamilyException.Code.FILE_REAL_NOT_UPLOAD);
             fileExt = new FileExt();
             fileExt.setPlace(Optional.ofNullable(fileExt.getPlace()).orElse(FileExtPlace.MINIO));
+            fileExt.setFileSize(new BigDecimal(realFile.getSize()).divide(new BigDecimal(1024 * 1024)).floatValue());
+            fileExt.setFileType(FileUploadUtils.getExtension(realFile));
             StringBuilder sb = new StringBuilder();
             if (FileExtPlace.MINIO.equals(fileExt.getPlace())) {
                 sb.append("/").append(OssProperties.getMinio().getDefaultBucket());
@@ -95,10 +98,7 @@ public class FileServiceImpl extends ServiceImpl<FileMapper, FamilyFile> impleme
                     sb.append("/").append(ancestorsFile.getName());
                 }
             }
-            fileExt.setFilePath(sb.append("/").append(realFile.getOriginalFilename()).toString());
-            // 当前文件管理的所有文件默认都存放在MinIO中，后续有需要可以修改。
-            fileExt.setFileSize(new BigDecimal(realFile.getSize()).divide(new BigDecimal(1024 * 1024)).floatValue());
-            fileExt.setFileType(FileUploadUtils.getExtension(realFile));
+            fileExt.setFilePath(sb.append("/").append(IdUtils.fastSimpleUUID()).append(".").append(fileExt.getFileType()).toString());
             if (!FileUploadUtils.isAllowedExtension(fileExt.getFileType(), MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION)) {
                 // 当前文件格式不支持
                 throw new InvalidExtensionException(MimeTypeUtils.DEFAULT_ALLOWED_EXTENSION, fileExt.getFileType(), realFile.getOriginalFilename());
