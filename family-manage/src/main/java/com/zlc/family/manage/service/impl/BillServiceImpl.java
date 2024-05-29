@@ -128,7 +128,7 @@ public class BillServiceImpl extends ServiceImpl<BillMapper, Bill> implements IB
         if (oldBill.getAccountId() != entity.getAccountId()) {
             // 如果账户id发生变化 那么需要将旧的撤回 新的做更新
             // 1. 先获取上一次的金额复原
-            BigDecimal lastAmountFixed = FamilyUtils.getAmount(entity.getFlow(), oldBill.getAmount()).negate();
+            BigDecimal lastAmountFixed = FamilyUtils.getAmount(oldBill.getFlow(), oldBill.getAmount()).negate();
             updateAccount(oldBill.getAccountId(), lastAmountFixed);
             // 2. 再得到本次的金额
             BigDecimal curAmount = FamilyUtils.getAmount(entity.getFlow(), entity.getAmount());
@@ -136,7 +136,7 @@ public class BillServiceImpl extends ServiceImpl<BillMapper, Bill> implements IB
         } else if (oldBill.getAmount().compareTo(entity.getAmount()) != 0 || oldBill.getFlow() != entity.getFlow()) {
             // 如果本次修改了金额或者是资金流向 那么账户余额也要重新计算
             // 1. 先获取上一次的金额复原
-            BigDecimal lastAmountFixed = FamilyUtils.getAmount(entity.getFlow(), oldBill.getAmount()).negate();
+            BigDecimal lastAmountFixed = FamilyUtils.getAmount(oldBill.getFlow(), oldBill.getAmount()).negate();
             // 2. 再得到本次的金额
             BigDecimal curAmount = FamilyUtils.getAmount(entity.getFlow(), entity.getAmount());
             // 3. 两次金额作加法 就是本次应该修改的金额
