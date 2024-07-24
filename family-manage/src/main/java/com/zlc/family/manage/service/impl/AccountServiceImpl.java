@@ -102,7 +102,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
         String now = DateUtils.dateTimeNow(DateUtils.YYYY_MM_DD_HH_MM_SS);
         // 2.发送钉钉消息推送
         DingMsgBody msgBody = new DingMsgBody(String.format(template, account.getName(), bill.getAmount(), Optional.ofNullable(bill.getRemark()).orElse(""), now, notifyTarget, account.getBalance()));
-        msgBody.setTitle("余额");
+        msgBody.setTitle("余额:" + account.getBalance());
         msgBody.setAtMobiles(Collections.singletonList(notifyTarget));
         NotifyFactory.createMsgNotify(MsgType.DING).sendMsg(msgBody);
     }
