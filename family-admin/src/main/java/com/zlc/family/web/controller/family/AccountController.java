@@ -7,12 +7,12 @@ import com.zlc.family.common.constant.FamilyConstants;
 import com.zlc.family.common.core.controller.BaseController;
 import com.zlc.family.common.core.domain.AjaxResult;
 import com.zlc.family.common.core.page.TableDataInfo;
-import com.zlc.family.common.core.query.BaseQuery;
 import com.zlc.family.common.core.vo.BaseSelectVo;
 import com.zlc.family.common.enums.BusinessType;
 import com.zlc.family.common.enums.Operator;
 import com.zlc.family.common.exception.family.FamilyException;
 import com.zlc.family.manage.domain.Account;
+import com.zlc.family.manage.domain.query.AccountQuery;
 import com.zlc.family.manage.service.IAccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -40,7 +40,7 @@ public class AccountController extends BaseController {
      */
     @PreAuthorize("hasPermission('family:account:list')")
     @GetMapping("/list")
-    public TableDataInfo list(BaseQuery query) {
+    public TableDataInfo list(AccountQuery query) {
         startPage();
         List<Account> list = accountService.listAccount(query);
         return getDataTable(list);
@@ -63,7 +63,8 @@ public class AccountController extends BaseController {
      */
     @PreAuthorize("hasPermission('family:account:list')")
     @GetMapping("/select")
-    public AjaxResult select(BaseQuery query) {
+    public AjaxResult select(AccountQuery query) {
+        query.setEnabled(true);
         List<Account> list = accountService.listAccount(query);
         return success(BaseSelectVo.init(list));
     }

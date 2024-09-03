@@ -13,6 +13,7 @@ import com.zlc.family.common.utils.FamilyUtils;
 import com.zlc.family.common.utils.StringUtils;
 import com.zlc.family.manage.domain.Account;
 import com.zlc.family.manage.domain.Bill;
+import com.zlc.family.manage.domain.query.AccountQuery;
 import com.zlc.family.manage.mapper.AccountMapper;
 import com.zlc.family.manage.service.IAccountService;
 import lombok.extern.slf4j.Slf4j;
@@ -50,9 +51,10 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
 
     @Override
     @DataScope(existsAlias = false, useSql = false)
-    public List<Account> listAccount(BaseQuery query) {
+    public List<Account> listAccount(AccountQuery query) {
         QueryWrapper<Account> qw = new QueryWrapper<Account>();
         qw.lambda().eq(Account::getDelFlag, FamilyConstants.DEL_NO);
+        qw.lambda().eq(query.getEnabled() != null, Account::getEnabled, query.getEnabled());
         FamilyUtils.addDataScope(query, qw);
         return list(qw);
     }

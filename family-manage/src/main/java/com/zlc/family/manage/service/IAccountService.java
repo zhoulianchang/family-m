@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.zlc.family.common.core.query.BaseQuery;
 import com.zlc.family.manage.domain.Account;
 import com.zlc.family.manage.domain.Bill;
+import com.zlc.family.manage.domain.query.AccountQuery;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -22,7 +23,7 @@ public interface IAccountService extends IService<Account> {
 
     void resetBalance();
 
-    List<Account> listAccount(BaseQuery query);
+    List<Account> listAccount(AccountQuery query);
 
     /**
      * 通知账户金额(多个)

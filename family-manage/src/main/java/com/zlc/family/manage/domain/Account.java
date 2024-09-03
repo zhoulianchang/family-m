@@ -65,6 +65,10 @@ public class Account extends BaseEntityFlag {
      * 账户当前余额
      */
     private BigDecimal balance;
+    /**
+     * 启用状态，1启用 0禁用
+     */
+    private Boolean enabled;
 
     public Account() {
     }
