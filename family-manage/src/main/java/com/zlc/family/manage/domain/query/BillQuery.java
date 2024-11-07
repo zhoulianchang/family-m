@@ -25,4 +25,8 @@ public class BillQuery extends BaseQuery {
      * 分类
      */
     private Integer type;
+    /**
+     * 备注模糊匹配
+     */
+    private String remarkLike;
 }

@@ -18,6 +18,9 @@
         <if test="query.userName != null and query.userName !=''">
             AND fb.user_name = #{query.userName}
         </if>
+        <if test="query.remarkLike != null and query.remarkLike !=''">
+            AND fb.remark like concat('%', #{query.remarkLike}, '%')
+        </if>
         <if test="query.type != null">
             AND fb.type = #{query.type}
         </if>

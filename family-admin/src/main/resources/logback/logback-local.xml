@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <!-- 日志存放路径 -->
-	<property name="log.path" value="/Users/zlc/develop/ideaWorkspace/logs" />
+	<property name="log.path" value="./logs" />
     <!-- 日志输出格式 -->
 	<property name="log.pattern" value="%red(%d{HH:mm:ss.SSS}) %red([%thread]) %highlight(%-5level) %logger{20} - [%method,%line] - %cyan(%msg%n)" />
 

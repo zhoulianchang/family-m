@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,7 +63,7 @@ public class FavorController extends BaseController {
     public AjaxResult statsAmount(FavorQuery query) {
         List<Favor> list = favorService.list(buildQW(query));
         Favor favor = favorService.getOne(buildQW(query).select("sum(amount) as amount"));
-        return success(favor.getAmount());
+        return success(Optional.ofNullable(favor).orElse(new Favor()).getAmount());
     }
 
     private QueryWrapper<Favor> buildQW(FavorQuery query) {
