@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @ConfigurationProperties(prefix = "family")
-public class FamilyConfig {
+public class FamilyProperties {
     /**
      * 项目名称
      */
@@ -83,7 +83,7 @@ public class FamilyConfig {
     }
 
     public void setProfile(String profile) {
-        FamilyConfig.profile = profile;
+        FamilyProperties.profile = profile;
     }
 
     public static boolean isAddressEnabled() {
@@ -91,7 +91,7 @@ public class FamilyConfig {
     }
 
     public void setAddressEnabled(boolean addressEnabled) {
-        FamilyConfig.addressEnabled = addressEnabled;
+        FamilyProperties.addressEnabled = addressEnabled;
     }
 
     public static String getCaptchaType() {
@@ -99,7 +99,7 @@ public class FamilyConfig {
     }
 
     public void setCaptchaType(String captchaType) {
-        FamilyConfig.captchaType = captchaType;
+        FamilyProperties.captchaType = captchaType;
     }
 
     /**

@@ -37,6 +37,21 @@ public class FamilyConstants {
      * 支出
      */
     public static final int BILL_FLOW_OUT = 2;
-
+    /**
+     * AI聊天结束标识
+     */
+    public static final String AI_END_FLAG = "DONE";
+    /**
+     * http相关
+     */
+    public static final String CONTENT_TYPE_JSON = "application/json";
+    public static final String CONTENT_TYPE_FORM = "application/x-www-form-urlencoded";
+    public static final String CONTENT_TYPE_TEXT = "text/html";
+    public static final String METHOD_DELETE = "DELETE";
+    public static final String METHOD_PATCH = "PATCH";
+    public static final String METHOD_POST = "POST";
+    public static final String METHOD_PUT = "PUT";
+    public static final String METHOD_GET = "GET";
+    public static final String HEADER_CONTENT_TYPE = "Content-Type";
 
 }

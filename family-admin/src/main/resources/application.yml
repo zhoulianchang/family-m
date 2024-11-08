@@ -207,3 +207,10 @@ oss:
     endpoint: ${MINIO_ENDPOINT}
     # 外网地址
     foreign-endpoint: ${MINIO_FOREIGN_ENDPOINT}
+ai:
+  # gpt配置
+  gpt:
+    # 地址
+    url: "https://api.chatanywhere.tech"
+    # 认证密钥
+    access-key: ${GPT_ACCESS_KEY}

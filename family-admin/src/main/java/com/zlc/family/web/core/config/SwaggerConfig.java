@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import com.zlc.family.common.config.FamilyConfig;
+import com.zlc.family.common.config.FamilyProperties;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -34,7 +34,7 @@ public class SwaggerConfig {
      * 系统基础配置
      */
     @Autowired
-    private FamilyConfig familyConfig;
+    private FamilyProperties familyProperties;
 
     /**
      * 是否开启swagger
@@ -118,9 +118,9 @@ public class SwaggerConfig {
                 // 描述
                 .description("描述：用于管理集团旗下公司的人员信息,具体包括XXX,XXX模块...")
                 // 作者信息
-                .contact(new Contact(familyConfig.getName(), null, null))
+                .contact(new Contact(familyProperties.getName(), null, null))
                 // 版本
-                .version("版本号:" + familyConfig.getVersion())
+                .version("版本号:" + familyProperties.getVersion())
                 .build();
     }
 }

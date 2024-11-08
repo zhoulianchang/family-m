@@ -1,6 +1,6 @@
 package com.zlc.family.framework.config;
 
-import com.zlc.family.common.config.FamilyConfig;
+import com.zlc.family.common.config.FamilyProperties;
 import com.zlc.family.common.constant.Constants;
 import com.zlc.family.framework.interceptor.RepeatSubmitInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +30,7 @@ public class ResourcesConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         /** 本地文件上传路径 */
         registry.addResourceHandler(Constants.RESOURCE_PREFIX + "/**")
-                .addResourceLocations("file:" + FamilyConfig.getProfile() + "/");
+                .addResourceLocations("file:" + FamilyProperties.getProfile() + "/");
 
         /** swagger配置 */
         registry.addResourceHandler("/swagger-ui/**")

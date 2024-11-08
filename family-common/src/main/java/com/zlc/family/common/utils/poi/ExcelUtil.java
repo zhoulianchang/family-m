@@ -78,7 +78,7 @@ import com.zlc.family.common.annotation.Excel;
 import com.zlc.family.common.annotation.Excel.ColumnType;
 import com.zlc.family.common.annotation.Excel.Type;
 import com.zlc.family.common.annotation.Excels;
-import com.zlc.family.common.config.FamilyConfig;
+import com.zlc.family.common.config.FamilyProperties;
 import com.zlc.family.common.core.domain.AjaxResult;
 import com.zlc.family.common.exception.UtilException;
 import com.zlc.family.common.utils.DateUtils;
@@ -1148,7 +1148,7 @@ public class ExcelUtil<T> {
      * @param filename 文件名称
      */
     public String getAbsoluteFile(String filename) {
-        String downloadPath = FamilyConfig.getDownloadPath() + filename;
+        String downloadPath = FamilyProperties.getDownloadPath() + filename;
         File desc = new File(downloadPath);
         if (!desc.getParentFile().exists()) {
             desc.getParentFile().mkdirs();

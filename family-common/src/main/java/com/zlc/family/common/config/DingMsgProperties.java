@@ -1,7 +1,5 @@
 package com.zlc.family.common.config;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +13,7 @@ import java.util.Map;
  */
 @Component
 @ConfigurationProperties(prefix = "ding-msg")
-public class DingMsgConfig {
+public class DingMsgProperties {
 
     private static String url;
     private static Map<String, RobotConfig> robots;
@@ -25,7 +23,7 @@ public class DingMsgConfig {
     }
 
     public void setUrl(String url) {
-        DingMsgConfig.url = url;
+        DingMsgProperties.url = url;
     }
 
     public static Map<String, RobotConfig> getRobots() {
@@ -33,7 +31,7 @@ public class DingMsgConfig {
     }
 
     public void setRobots(Map<String, RobotConfig> robots) {
-        DingMsgConfig.robots = robots;
+        DingMsgProperties.robots = robots;
     }
 
     public static class RobotConfig {

@@ -5,7 +5,7 @@ import com.dingtalk.api.DingTalkClient;
 import com.dingtalk.api.request.OapiRobotSendRequest;
 import com.dingtalk.api.response.OapiRobotSendResponse;
 import com.taobao.api.ApiException;
-import com.zlc.family.common.config.DingMsgConfig;
+import com.zlc.family.common.config.DingMsgProperties;
 import com.zlc.family.common.constant.ErrorMsgCode;
 import com.zlc.family.common.core.domain.model.DingMsgBody;
 import com.zlc.family.common.exception.job.DingException;
@@ -24,12 +24,12 @@ public class DingMsgNotify extends MsgNotify<DingMsgBody> {
 
     @Override
     public void sendMsg(DingMsgBody msgBody) {
-        if (StringUtils.isEmpty(msgBody.getRobotKey()) || !DingMsgConfig.getRobots().containsKey(msgBody.getRobotKey())) {
+        if (StringUtils.isEmpty(msgBody.getRobotKey()) || !DingMsgProperties.getRobots().containsKey(msgBody.getRobotKey())) {
             log.error("Ding message sending failure.config error");
             throw new DingException(ErrorMsgCode.DING_SEND_ERROR_CONFIG);
         }
         // 1.获取钉钉机器人的配置信息
-        DingMsgConfig.RobotConfig robotConfig = DingMsgConfig.getRobots().get(msgBody.getRobotKey());
+        DingMsgProperties.RobotConfig robotConfig = DingMsgProperties.getRobots().get(msgBody.getRobotKey());
         // 2.获取钉钉客户端对象类
         DingTalkClient client = getDingTalkClient(robotConfig);
         if (client == null) {
@@ -57,8 +57,8 @@ public class DingMsgNotify extends MsgNotify<DingMsgBody> {
      * @param robotConfig 钉钉机器人配置
      * @return
      */
-    private DingTalkClient getDingTalkClient(DingMsgConfig.RobotConfig robotConfig) {
-        String url = DingMsgConfig.getUrl();
+    private DingTalkClient getDingTalkClient(DingMsgProperties.RobotConfig robotConfig) {
+        String url = DingMsgProperties.getUrl();
         switch (robotConfig.getType()) {
             case DingUtils.ROBOT_TYPE_SECRET:
                 String sign = DingUtils.getSign(robotConfig.getSecret(), System.currentTimeMillis());

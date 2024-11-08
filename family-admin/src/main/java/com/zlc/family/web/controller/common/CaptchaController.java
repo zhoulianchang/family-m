@@ -13,7 +13,7 @@ import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.google.code.kaptcha.Producer;
-import com.zlc.family.common.config.FamilyConfig;
+import com.zlc.family.common.config.FamilyProperties;
 import com.zlc.family.common.constant.CacheConstants;
 import com.zlc.family.common.constant.Constants;
 import com.zlc.family.common.core.domain.AjaxResult;
@@ -60,7 +60,7 @@ public class CaptchaController {
         BufferedImage image = null;
 
         // 生成验证码
-        String captchaType = FamilyConfig.getCaptchaType();
+        String captchaType = FamilyProperties.getCaptchaType();
         if ("math".equals(captchaType)) {
             String capText = captchaProducerMath.createText();
             capStr = capText.substring(0, capText.lastIndexOf("@"));

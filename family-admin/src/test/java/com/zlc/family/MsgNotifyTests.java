@@ -1,7 +1,7 @@
 package com.zlc.family;
 
 import com.alibaba.fastjson2.JSON;
-import com.zlc.family.common.config.DingMsgConfig;
+import com.zlc.family.common.config.DingMsgProperties;
 import com.zlc.family.common.core.domain.model.DingMsgBody;
 import com.zlc.family.common.enums.DingMsgType;
 import com.zlc.family.common.enums.MsgType;
@@ -23,7 +23,7 @@ import java.util.Map;
 public class MsgNotifyTests {
     @BeforeEach
     void beforeAll() {
-        for (Map.Entry<String, DingMsgConfig.RobotConfig> entry : DingMsgConfig.getRobots().entrySet()) {
+        for (Map.Entry<String, DingMsgProperties.RobotConfig> entry : DingMsgProperties.getRobots().entrySet()) {
             log.info("your ding robot [{}] config is:{}", entry.getKey(), JSON.toJSONString(entry.getValue()));
         }
     }

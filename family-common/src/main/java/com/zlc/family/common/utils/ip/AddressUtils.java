@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.zlc.family.common.config.FamilyConfig;
+import com.zlc.family.common.config.FamilyProperties;
 import com.zlc.family.common.constant.Constants;
 import com.zlc.family.common.utils.StringUtils;
 import com.zlc.family.common.utils.http.HttpUtils;
@@ -28,7 +28,7 @@ public class AddressUtils {
         if (IpUtils.internalIp(ip)) {
             return "内网IP";
         }
-        if (FamilyConfig.isAddressEnabled()) {
+        if (FamilyProperties.isAddressEnabled()) {
             try {
                 String rspStr = HttpUtils.sendGet(IP_URL, "ip=" + ip + "&json=true", Constants.GBK);
                 if (StringUtils.isEmpty(rspStr)) {

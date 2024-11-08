@@ -1,7 +1,7 @@
 package com.zlc.family.web.controller.system;
 
 import com.zlc.family.common.annotation.Log;
-import com.zlc.family.common.config.FamilyConfig;
+import com.zlc.family.common.config.FamilyProperties;
 import com.zlc.family.common.core.controller.BaseController;
 import com.zlc.family.common.core.domain.AjaxResult;
 import com.zlc.family.common.core.domain.entity.SysUser;
@@ -104,7 +104,7 @@ public class SysProfileController extends BaseController {
     public AjaxResult avatar(@RequestParam("avatarfile") MultipartFile file) throws Exception {
         if (!file.isEmpty()) {
             LoginUser loginUser = getLoginUser();
-            String avatar = FileUploadUtils.upload(FamilyConfig.getAvatarPath(), file, MimeTypeUtils.IMAGE_EXTENSION);
+            String avatar = FileUploadUtils.upload(FamilyProperties.getAvatarPath(), file, MimeTypeUtils.IMAGE_EXTENSION);
             if (userService.updateUserAvatar(loginUser.getUsername(), avatar)) {
                 AjaxResult ajax = AjaxResult.success();
                 ajax.put("imgUrl", avatar);

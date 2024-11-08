@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import com.zlc.family.common.config.FamilyConfig;
+import com.zlc.family.common.config.FamilyProperties;
 import com.zlc.family.common.utils.DateUtils;
 import com.zlc.family.common.utils.StringUtils;
 import com.zlc.family.common.utils.uuid.IdUtils;
@@ -64,7 +64,7 @@ public class FileUtils {
      * @throws IOException IO异常
      */
     public static String writeImportBytes(byte[] data) throws IOException {
-        return writeBytes(data, FamilyConfig.getImportPath());
+        return writeBytes(data, FamilyProperties.getImportPath());
     }
 
     /**
