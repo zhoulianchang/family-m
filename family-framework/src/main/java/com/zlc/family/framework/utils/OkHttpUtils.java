@@ -280,7 +280,7 @@ public class OkHttpUtils {
                             if (StringUtils.isNotEmpty(line)) {
                                 log.debug("stream result is:{}", line);
                                 if (line.contains(FamilyConstants.AI_END_FLAG)) {
-                                    sseEmitter.send(FamilyConstants.AI_END_FLAG);
+                                    sseEmitter.send(SseEmitter.event().name(FamilyConstants.AI_END_FLAG).data("{}"));
                                     break;
                                 }
                                 if (line.startsWith("data:")) {
@@ -290,8 +290,8 @@ public class OkHttpUtils {
                                         continue;
                                     }
                                     for (GPTChatResp.Choices choice : gptChatResp.getChoices()) {
-                                        if (choice.getDelta() != null && StringUtils.isNotEmpty(choice.getDelta().getContent())) {
-                                            sseEmitter.send(choice.getDelta().getContent());
+                                        if (choice.getDelta() != null && !"stop".equals(choice.getFinishReason())) {
+                                            sseEmitter.send(choice.getDelta());
                                         }
                                     }
                                 }

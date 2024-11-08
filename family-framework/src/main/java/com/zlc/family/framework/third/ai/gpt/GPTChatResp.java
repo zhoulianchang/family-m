@@ -1,5 +1,6 @@
 package com.zlc.family.framework.third.ai.gpt;
 
+import com.alibaba.fastjson2.JSONObject;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,16 +27,8 @@ public class GPTChatResp {
     @NoArgsConstructor
     public static class Choices {
         private int index;
-        private Delta delta;
+        private JSONObject delta;
         private String logprobs;
         private String finishReason;
-    }
-
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    public static class Delta {
-        private String role;
-        private String content;
     }
 }
