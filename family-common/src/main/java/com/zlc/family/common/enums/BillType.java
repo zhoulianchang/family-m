@@ -47,6 +47,9 @@ public enum BillType {
      * 工资
      */
     SALARY(9, 2, "工资"),
+    RENT(10, 2, "租金"),
+    BUSINESS_BANQUET(11, 1, "商务宴请"),
+    FITMENT(12, 1, "装修"),
     ;
     private final Integer code;
     /**
